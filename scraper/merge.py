@@ -79,8 +79,8 @@ def build_merged(nse_data: dict, bse_data: dict, gmp_data: dict) -> list:
             by_key[key] = rec
         return key, by_key[key]
 
-    # NSE: current + upcoming + past (current/upcoming duplicate each other; dedupe by symbol)
-    for bucket in ("upcoming", "past"):
+    # NSE: current + upcoming (current/upcoming duplicate each other; dedupe by symbol)
+    for bucket in ("upcoming",):
         for row in nse_data.get(bucket, []):
             name = row.get("companyName") or row.get("company")
             key, rec = get_or_create(name)
@@ -156,28 +156,40 @@ def build_merged(nse_data: dict, bse_data: dict, gmp_data: dict) -> list:
     return list(by_key.values()), unmatched_gmp
 
 
-def run(out_path: str, past_months: int):
-    nse_data = nse.fetch_all(months_back=past_months)
+_OPEN_STATUSES = ("open", "upcoming")
+
+
+def _trim(rec: dict) -> dict:
+    gmp_row = rec.get("gmp")
+    return {
+        "companyName": rec["companyName"],
+        "platform": rec["platform"],
+        "status": rec["status"],
+        "openDate": rec["openDate"],
+        "closeDate": rec["closeDate"],
+        "listingDate": rec["listingDate"],
+        "priceBand": rec["priceBand"],
+        "lotSize": rec["lotSize"],
+        "faceValue": rec["faceValue"],
+        "issueSize": rec["issueSize"],
+        "gmp": gmp_row["gmp"] if gmp_row else None,
+        "subscriptionTimes": gmp_row.get("subscriptionTimes") if gmp_row else None,
+    }
+
+
+def run(out_path: str):
+    nse_data = nse.fetch_all(months_back=0)
     bse_data = bse.fetch_all()
     gmp_data = gmp.fetch_all()
 
-    ipos, unmatched_gmp = build_merged(nse_data, bse_data, gmp_data)
-    ipos.sort(key=lambda r: (r["openDate"] or "", r["companyName"] or ""), reverse=True)
+    ipos, _unmatched_gmp = build_merged(nse_data, bse_data, gmp_data)
+    ipos = [r for r in ipos if r["status"] in _OPEN_STATUSES]
+    ipos.sort(key=lambda r: (r["openDate"] or "9999-99-99", r["companyName"] or ""))
+    trimmed = [_trim(r) for r in ipos]
 
     output = {
         "generatedAt": utcnow_iso(),
-        "sources": {
-            "nse": {"ok": nse_data["ok"], "error": nse_data["error"]},
-            "bse": {"ok": bse_data["ok"], "error": bse_data["error"]},
-            "gmp": {"ok": gmp_data["ok"], "error": gmp_data["error"]},
-        },
-        "counts": {
-            "total": len(ipos),
-            "withGmp": sum(1 for r in ipos if r["gmp"] is not None),
-            "unmatchedGmpRows": len(unmatched_gmp),
-        },
-        "unmatchedGmpNames": unmatched_gmp,
-        "ipos": ipos,
+        "ipos": trimmed,
     }
 
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
@@ -190,13 +202,7 @@ def run(out_path: str, past_months: int):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", default=DEFAULT_OUT)
-    parser.add_argument("--past-months", type=int, default=3)
     args = parser.parse_args()
 
-    result = run(args.out, args.past_months)
-    print(
-        f"Wrote {args.out}: total={result['counts']['total']} "
-        f"withGmp={result['counts']['withGmp']} "
-        f"unmatchedGmpRows={result['counts']['unmatchedGmpRows']} "
-        f"sources_ok={ {k: v['ok'] for k, v in result['sources'].items()} }"
-    )
+    result = run(args.out)
+    print(f"Wrote {args.out}: open/upcoming IPOs={len(result['ipos'])}")

@@ -27,7 +27,7 @@ data/
 ```
 pip install -r requirements.txt
 cd scraper
-python merge.py --out ../data/ipos.json --past-months 3
+python merge.py --out ../data/ipos.json
 ```
 
 Each scraper can also be run standalone for debugging (`python nse.py`,
@@ -43,42 +43,33 @@ Each scraper can also be run standalone for debugging (`python nse.py`,
 
 ## Output schema (`data/ipos.json`)
 
+Only **open** or **upcoming** IPOs are included — no past/listed IPOs, and no
+raw per-source data. Each record has exactly these fields:
+
 ```json
 {
-  "generatedAt": "2026-09-13T04:49:12Z",
-  "sources": {
-    "nse": { "ok": true, "error": null },
-    "bse": { "ok": true, "error": null },
-    "gmp": { "ok": true, "error": null }
-  },
-  "counts": { "total": 83, "withGmp": 17, "unmatchedGmpRows": 17 },
-  "unmatchedGmpNames": ["A-One Steels", "..."],
+  "generatedAt": "2026-09-13T05:53:53Z",
   "ipos": [
     {
-      "companyName": "Sonaselection India Limited",
-      "normalizedName": "sonaselection india",
-      "platform": "Mainboard",
-      "exchanges": ["BSE", "NSE"],
-      "status": "upcoming",
-      "openDate": "2026-09-17",
-      "closeDate": "2026-09-21",
-      "listingDate": "2026-09-24",
-      "priceBand": { "min": 94.0, "max": 99.0 },
-      "lotSize": "150",
+      "companyName": "Raksan Transformers Limited",
+      "platform": "SME",
+      "status": "open",
+      "openDate": "2026-09-10",
+      "closeDate": "2026-09-15",
+      "listingDate": "2026-09-18",
+      "priceBand": { "min": 258.0, "max": 273.0 },
+      "lotSize": "400",
       "faceValue": 10.0,
-      "issueSize": "₹141.57 Cr",
-      "gmp": { "...": "raw parsed GMP row, see gmp.py" },
-      "nse": { "...": "raw NSE row" },
-      "bse": { "...": "raw BSE row" }
+      "issueSize": "₹150.50 Cr",
+      "gmp": { "value": 30.0, "percent": 10.99 },
+      "subscriptionTimes": "1.31x"
     }
   ]
 }
 ```
 
-Every field is populated from whichever source actually had it; a `null`
-means no source provided that field, not that it was omitted. `nse`/`bse`/`gmp`
-sub-objects hold the (lightly cleaned) raw rows from each source so nothing is
-lost even if the top-level fields above miss something.
+`gmp` and `subscriptionTimes` are `null` when InvestorGain hasn't quoted a
+GMP for that IPO yet — not a scrape failure.
 
 ## Known limitations / caveats
 

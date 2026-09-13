@@ -24,7 +24,7 @@ jobs:
 
       - name: Run scrapers and merge
         working-directory: scraper
-        run: python merge.py --out ../data/ipos.json --past-months 3
+        run: python merge.py --out ../data/ipos.json
 
       - name: Commit updated data
         run: |
