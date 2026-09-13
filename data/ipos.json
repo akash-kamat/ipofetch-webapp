@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-13T06:00:14Z",
+  "generatedAt": "2026-09-13T13:57:20Z",
   "ipos": [
     {
       "companyName": "Maharaja & Speedex India Limited",
@@ -16,8 +16,8 @@
       "faceValue": 10.0,
       "issueSize": "₹80.13 Cr",
       "gmp": {
-        "value": 48.0,
-        "percent": 25.81
+        "value": 50.0,
+        "percent": 26.88
       },
       "subscriptionTimes": "0.48x"
     },
@@ -136,8 +136,8 @@
       "faceValue": 2.0,
       "issueSize": "₹125.50 Cr",
       "gmp": {
-        "value": 15.0,
-        "percent": 34.88
+        "value": 11.0,
+        "percent": 25.58
       },
       "subscriptionTimes": "1.49x"
     },
@@ -223,7 +223,7 @@
     },
     {
       "companyName": "SS Retail Limited",
-      "platform": null,
+      "platform": "Mainboard",
       "status": "upcoming",
       "openDate": "2026-09-16",
       "closeDate": "2026-09-18",
@@ -233,11 +233,11 @@
         "max": 424.0
       },
       "lotSize": "35",
-      "faceValue": null,
+      "faceValue": 10.0,
       "issueSize": "₹500.00 Cr",
       "gmp": {
-        "value": 106.0,
-        "percent": 25.0
+        "value": 110.0,
+        "percent": 25.94
       },
       "subscriptionTimes": "-"
     },
