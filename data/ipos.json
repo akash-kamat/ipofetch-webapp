@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-14T07:19:43Z",
+  "generatedAt": "2026-09-14T14:29:22Z",
   "ipos": [
     {
       "companyName": "Maharaja & Speedex India Limited",
@@ -16,8 +16,8 @@
       "faceValue": 10.0,
       "issueSize": "₹80.13 Cr",
       "gmp": {
-        "value": 45.0,
-        "percent": 24.19
+        "value": 40.0,
+        "percent": 21.51
       },
       "subscriptionTimes": "0.48x"
     },
@@ -56,8 +56,8 @@
       "faceValue": 10.0,
       "issueSize": "₹150.50 Cr",
       "gmp": {
-        "value": 30.0,
-        "percent": 10.99
+        "value": 55.0,
+        "percent": 20.15
       },
       "subscriptionTimes": "1.31x"
     },
@@ -76,8 +76,8 @@
       "faceValue": 10.0,
       "issueSize": "₹210.00 Cr",
       "gmp": {
-        "value": 22.0,
-        "percent": 15.71
+        "value": 23.0,
+        "percent": 16.43
       },
       "subscriptionTimes": "1.25x"
     },
@@ -196,14 +196,14 @@
       "faceValue": 10.0,
       "issueSize": "₹1000.00 Cr",
       "gmp": {
-        "value": 24.0,
-        "percent": 28.57
+        "value": 25.0,
+        "percent": 29.76
       },
       "subscriptionTimes": "-"
     },
     {
       "companyName": "Jindal Supreme (India) Limited",
-      "platform": null,
+      "platform": "Mainboard",
       "status": "upcoming",
       "openDate": "2026-09-16",
       "closeDate": "2026-09-18",
@@ -213,7 +213,7 @@
         "max": 93.0
       },
       "lotSize": "161",
-      "faceValue": null,
+      "faceValue": 10.0,
       "issueSize": "₹124.88 Cr",
       "gmp": {
         "value": 27.0,
@@ -236,10 +236,27 @@
       "faceValue": 10.0,
       "issueSize": "₹500.00 Cr",
       "gmp": {
-        "value": 135.0,
-        "percent": 31.84
+        "value": 140.0,
+        "percent": 33.02
       },
       "subscriptionTimes": "-"
+    },
+    {
+      "companyName": "NATIONAL STOCK EXCHANGE OF INDIA LIMITED",
+      "platform": "Mainboard",
+      "status": "upcoming",
+      "openDate": "2026-09-17",
+      "closeDate": "2026-09-21",
+      "listingDate": null,
+      "priceBand": {
+        "min": 1700.0,
+        "max": 1785.0
+      },
+      "lotSize": null,
+      "faceValue": 1.0,
+      "issueSize": null,
+      "gmp": null,
+      "subscriptionTimes": null
     },
     {
       "companyName": "Sonaselection India Limited",
