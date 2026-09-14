@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-14T01:56:06Z",
+  "generatedAt": "2026-09-14T07:19:43Z",
   "ipos": [
     {
       "companyName": "Maharaja & Speedex India Limited",
@@ -76,8 +76,8 @@
       "faceValue": 10.0,
       "issueSize": "₹210.00 Cr",
       "gmp": {
-        "value": 15.0,
-        "percent": 10.71
+        "value": 22.0,
+        "percent": 15.71
       },
       "subscriptionTimes": "1.25x"
     },
@@ -176,8 +176,8 @@
       "faceValue": 10.0,
       "issueSize": "₹49.54 Cr",
       "gmp": {
-        "value": null,
-        "percent": 0.0
+        "value": 10.0,
+        "percent": 2.93
       },
       "subscriptionTimes": "-"
     },
@@ -236,8 +236,8 @@
       "faceValue": 10.0,
       "issueSize": "₹500.00 Cr",
       "gmp": {
-        "value": 120.0,
-        "percent": 28.3
+        "value": 135.0,
+        "percent": 31.84
       },
       "subscriptionTimes": "-"
     },
