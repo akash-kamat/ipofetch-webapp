@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15T09:00:33Z",
+  "generatedAt": "2026-09-15T14:30:58Z",
   "ipos": [
     {
       "companyName": "CENTURY BUSINESS MEDIA LIMITED",
@@ -19,7 +19,7 @@
         "value": null,
         "percent": 0.0
       },
-      "subscriptionTimes": "1.27x"
+      "subscriptionTimes": "1.45x"
     },
     {
       "companyName": "INJECTO POLYMERS LIMITED",
@@ -39,7 +39,7 @@
         "value": null,
         "percent": 0.0
       },
-      "subscriptionTimes": "0.44x"
+      "subscriptionTimes": "0.85x"
     },
     {
       "companyName": "Manika Plastech Limited",
@@ -56,10 +56,10 @@
       "faceValue": 2.0,
       "issueSize": "₹125.50 Cr",
       "gmp": {
-        "value": 4.0,
-        "percent": 9.3
+        "value": 3.0,
+        "percent": 6.98
       },
-      "subscriptionTimes": "6.88x"
+      "subscriptionTimes": "8.78x"
     },
     {
       "companyName": "Shakti Polytarp Limited",
@@ -79,7 +79,7 @@
         "value": null,
         "percent": 0.0
       },
-      "subscriptionTimes": "0.34x"
+      "subscriptionTimes": "0.64x"
     },
     {
       "companyName": "Vama Wovenfab Limited",
@@ -176,8 +176,8 @@
       "faceValue": null,
       "issueSize": "₹46.44 Cr",
       "gmp": {
-        "value": null,
-        "percent": 0.0
+        "value": 10.0,
+        "percent": 9.9
       },
       "subscriptionTimes": "-"
     },
@@ -213,8 +213,28 @@
       "faceValue": 10.0,
       "issueSize": "₹141.57 Cr",
       "gmp": {
-        "value": 5.0,
-        "percent": 5.05
+        "value": 8.0,
+        "percent": 8.08
+      },
+      "subscriptionTimes": "-"
+    },
+    {
+      "companyName": "SpectraA Technology Solutions Limited",
+      "platform": "SME",
+      "status": "upcoming",
+      "openDate": "2026-09-17",
+      "closeDate": "2026-09-21",
+      "listingDate": "2026-09-24",
+      "priceBand": {
+        "min": 112.0,
+        "max": 118.0
+      },
+      "lotSize": "1200",
+      "faceValue": null,
+      "issueSize": "₹42.52 Cr",
+      "gmp": {
+        "value": 50.0,
+        "percent": 42.37
       },
       "subscriptionTimes": "-"
     }
