@@ -1,86 +1,6 @@
 {
-  "generatedAt": "2026-09-15T02:04:52Z",
+  "generatedAt": "2026-09-15T09:00:33Z",
   "ipos": [
-    {
-      "companyName": "Maharaja & Speedex India Limited",
-      "platform": "SME",
-      "status": "open",
-      "openDate": "2026-09-10",
-      "closeDate": "2026-09-15",
-      "listingDate": "2026-09-18",
-      "priceBand": {
-        "min": 177.0,
-        "max": 186.0
-      },
-      "lotSize": "600",
-      "faceValue": 10.0,
-      "issueSize": "₹80.13 Cr",
-      "gmp": {
-        "value": 40.0,
-        "percent": 21.51
-      },
-      "subscriptionTimes": "0.48x"
-    },
-    {
-      "companyName": "OM GALAXY LIMITED",
-      "platform": "SME",
-      "status": "open",
-      "openDate": "2026-09-10",
-      "closeDate": "2026-09-15",
-      "listingDate": "2026-09-18",
-      "priceBand": {
-        "min": 85.0,
-        "max": 90.0
-      },
-      "lotSize": "1600",
-      "faceValue": 5.0,
-      "issueSize": "₹105.00 Cr",
-      "gmp": {
-        "value": null,
-        "percent": 0.0
-      },
-      "subscriptionTimes": "0.95x"
-    },
-    {
-      "companyName": "RAKSAN TRANSFORMERS LIMITED",
-      "platform": "SME",
-      "status": "open",
-      "openDate": "2026-09-10",
-      "closeDate": "2026-09-15",
-      "listingDate": "2026-09-18",
-      "priceBand": {
-        "min": 258.0,
-        "max": 273.0
-      },
-      "lotSize": "400",
-      "faceValue": 10.0,
-      "issueSize": "₹150.50 Cr",
-      "gmp": {
-        "value": 61.0,
-        "percent": 22.34
-      },
-      "subscriptionTimes": "1.31x"
-    },
-    {
-      "companyName": "Veegaland Developers Limited",
-      "platform": "Mainboard",
-      "status": "open",
-      "openDate": "2026-09-10",
-      "closeDate": "2026-09-15",
-      "listingDate": "2026-09-18",
-      "priceBand": {
-        "min": 130.0,
-        "max": 140.0
-      },
-      "lotSize": "107",
-      "faceValue": 10.0,
-      "issueSize": "₹210.00 Cr",
-      "gmp": {
-        "value": 20.0,
-        "percent": 14.29
-      },
-      "subscriptionTimes": "1.25x"
-    },
     {
       "companyName": "CENTURY BUSINESS MEDIA LIMITED",
       "platform": "SME",
@@ -99,7 +19,7 @@
         "value": null,
         "percent": 0.0
       },
-      "subscriptionTimes": "1.15x"
+      "subscriptionTimes": "1.27x"
     },
     {
       "companyName": "INJECTO POLYMERS LIMITED",
@@ -119,7 +39,7 @@
         "value": null,
         "percent": 0.0
       },
-      "subscriptionTimes": "0.29x"
+      "subscriptionTimes": "0.44x"
     },
     {
       "companyName": "Manika Plastech Limited",
@@ -136,15 +56,15 @@
       "faceValue": 2.0,
       "issueSize": "₹125.50 Cr",
       "gmp": {
-        "value": 11.0,
-        "percent": 25.58
+        "value": 4.0,
+        "percent": 9.3
       },
-      "subscriptionTimes": "1.49x"
+      "subscriptionTimes": "6.88x"
     },
     {
       "companyName": "Shakti Polytarp Limited",
       "platform": "SME",
-      "status": "upcoming",
+      "status": "open",
       "openDate": "2026-09-15",
       "closeDate": "2026-09-17",
       "listingDate": "2026-09-22",
@@ -159,12 +79,12 @@
         "value": null,
         "percent": 0.0
       },
-      "subscriptionTimes": "-"
+      "subscriptionTimes": "0.34x"
     },
     {
       "companyName": "Vama Wovenfab Limited",
       "platform": "SME",
-      "status": "upcoming",
+      "status": "open",
       "openDate": "2026-09-15",
       "closeDate": "2026-09-17",
       "listingDate": "2026-09-22",
@@ -179,7 +99,7 @@
         "value": 10.0,
         "percent": 2.93
       },
-      "subscriptionTimes": "-"
+      "subscriptionTimes": "0.01x"
     },
     {
       "companyName": "Hero Motors Limited",
@@ -196,8 +116,8 @@
       "faceValue": 10.0,
       "issueSize": "₹1000.00 Cr",
       "gmp": {
-        "value": 23.0,
-        "percent": 27.38
+        "value": 22.0,
+        "percent": 26.19
       },
       "subscriptionTimes": "-"
     },
@@ -236,13 +156,33 @@
       "faceValue": 10.0,
       "issueSize": "₹500.00 Cr",
       "gmp": {
-        "value": 140.0,
-        "percent": 33.02
+        "value": 145.0,
+        "percent": 34.2
       },
       "subscriptionTimes": "-"
     },
     {
-      "companyName": "NATIONAL STOCK EXCHANGE OF INDIA LIMITED",
+      "companyName": "Kheria Autocomp Limited",
+      "platform": "SME",
+      "status": "upcoming",
+      "openDate": "2026-09-17",
+      "closeDate": "2026-09-21",
+      "listingDate": "2026-09-24",
+      "priceBand": {
+        "min": 96.0,
+        "max": 101.0
+      },
+      "lotSize": "1200",
+      "faceValue": null,
+      "issueSize": "₹46.44 Cr",
+      "gmp": {
+        "value": null,
+        "percent": 0.0
+      },
+      "subscriptionTimes": "-"
+    },
+    {
+      "companyName": "National Stock Exchange of India Limited",
       "platform": "Mainboard",
       "status": "upcoming",
       "openDate": "2026-09-17",
@@ -273,8 +213,8 @@
       "faceValue": 10.0,
       "issueSize": "₹141.57 Cr",
       "gmp": {
-        "value": null,
-        "percent": 0.0
+        "value": 5.0,
+        "percent": 5.05
       },
       "subscriptionTimes": "-"
     }
