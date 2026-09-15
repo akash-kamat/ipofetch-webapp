@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15T14:30:58Z",
+  "generatedAt": "2026-09-15T19:19:34Z",
   "ipos": [
     {
       "companyName": "CENTURY BUSINESS MEDIA LIMITED",
@@ -96,8 +96,8 @@
       "faceValue": 10.0,
       "issueSize": "₹49.54 Cr",
       "gmp": {
-        "value": 10.0,
-        "percent": 2.93
+        "value": 30.0,
+        "percent": 8.8
       },
       "subscriptionTimes": "0.01x"
     },
@@ -116,8 +116,8 @@
       "faceValue": 10.0,
       "issueSize": "₹1000.00 Cr",
       "gmp": {
-        "value": 22.0,
-        "percent": 26.19
+        "value": 19.0,
+        "percent": 22.62
       },
       "subscriptionTimes": "-"
     },
@@ -156,8 +156,8 @@
       "faceValue": 10.0,
       "issueSize": "₹500.00 Cr",
       "gmp": {
-        "value": 145.0,
-        "percent": 34.2
+        "value": 128.0,
+        "percent": 30.19
       },
       "subscriptionTimes": "-"
     },
