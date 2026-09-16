@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T06:57:59Z",
+  "generatedAt": "2026-09-16T12:53:16Z",
   "ipos": [
     {
       "companyName": "Shakti Polytarp Limited",
@@ -19,7 +19,7 @@
         "value": null,
         "percent": 0.0
       },
-      "subscriptionTimes": "0.64x"
+      "subscriptionTimes": "0.72x"
     },
     {
       "companyName": "Vama Wovenfab Limited",
@@ -36,10 +36,10 @@
       "faceValue": 10.0,
       "issueSize": "₹49.54 Cr",
       "gmp": {
-        "value": 55.0,
-        "percent": 16.13
+        "value": 70.0,
+        "percent": 20.53
       },
-      "subscriptionTimes": "0.05x"
+      "subscriptionTimes": "0.45x"
     },
     {
       "companyName": "Hero Motors Limited",
@@ -56,10 +56,10 @@
       "faceValue": 10.0,
       "issueSize": "₹1000.00 Cr",
       "gmp": {
-        "value": 10.0,
-        "percent": 11.9
+        "value": 13.0,
+        "percent": 15.48
       },
-      "subscriptionTimes": "0.8x"
+      "subscriptionTimes": "1.48x"
     },
     {
       "companyName": "Jindal Supreme (India) Limited",
@@ -76,10 +76,10 @@
       "faceValue": 10.0,
       "issueSize": "₹124.88 Cr",
       "gmp": {
-        "value": 27.0,
-        "percent": 29.03
+        "value": 25.0,
+        "percent": 26.88
       },
-      "subscriptionTimes": "3.06x"
+      "subscriptionTimes": "7.56x"
     },
     {
       "companyName": "SS Retail Limited",
@@ -96,10 +96,10 @@
       "faceValue": 10.0,
       "issueSize": "₹500.00 Cr",
       "gmp": {
-        "value": 95.0,
-        "percent": 22.41
+        "value": 105.0,
+        "percent": 24.76
       },
-      "subscriptionTimes": "0.59x"
+      "subscriptionTimes": "1.52x"
     },
     {
       "companyName": "Kheria Autocomp Limited",
@@ -153,8 +153,8 @@
       "faceValue": 10.0,
       "issueSize": "₹141.57 Cr",
       "gmp": {
-        "value": 8.0,
-        "percent": 8.08
+        "value": 7.0,
+        "percent": 7.07
       },
       "subscriptionTimes": "-"
     },
