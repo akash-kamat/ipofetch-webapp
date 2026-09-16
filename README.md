@@ -66,10 +66,10 @@ uv run python -m scraper.merge --out data/ipos.json
 
 ## Vercel deployment
 
-Import the repository into Vercel and deploy. `vercel.json` routes `/api/*` to
-the FastAPI function, gives live collection up to 60 seconds, and leaves the
-HTML/CSS/JS as edge-served static assets. There are no required environment
-variables or external databases.
+Import the repository into Vercel and deploy. `pyproject.toml` declares the
+FastAPI entrypoint for Vercel's framework runtime, while `vercel.json` gives
+live collection up to 60 seconds. There are no required environment variables
+or external databases.
 
 Vercel function memory is reusable but not durable, so the 15-minute cache is
 best-effort per warm instance. The committed snapshot provides cold-start outage
