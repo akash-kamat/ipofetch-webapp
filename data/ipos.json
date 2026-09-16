@@ -1,66 +1,6 @@
 {
-  "generatedAt": "2026-09-15T22:29:46Z",
+  "generatedAt": "2026-09-16T01:56:01Z",
   "ipos": [
-    {
-      "companyName": "CENTURY BUSINESS MEDIA LIMITED",
-      "platform": "SME",
-      "status": "open",
-      "openDate": "2026-09-11",
-      "closeDate": "2026-09-16",
-      "listingDate": "2026-09-21",
-      "priceBand": {
-        "min": 70.0,
-        "max": 74.0
-      },
-      "lotSize": "1600",
-      "faceValue": 10.0,
-      "issueSize": "₹17.11 Cr",
-      "gmp": {
-        "value": null,
-        "percent": 0.0
-      },
-      "subscriptionTimes": "1.45x"
-    },
-    {
-      "companyName": "INJECTO POLYMERS LIMITED",
-      "platform": "SME",
-      "status": "open",
-      "openDate": "2026-09-11",
-      "closeDate": "2026-09-16",
-      "listingDate": "2026-09-21",
-      "priceBand": {
-        "min": 98.0,
-        "max": 100.0
-      },
-      "lotSize": "1200",
-      "faceValue": 10.0,
-      "issueSize": "₹56.12 Cr",
-      "gmp": {
-        "value": null,
-        "percent": 0.0
-      },
-      "subscriptionTimes": "0.85x"
-    },
-    {
-      "companyName": "Manika Plastech Limited",
-      "platform": "Mainboard",
-      "status": "open",
-      "openDate": "2026-09-11",
-      "closeDate": "2026-09-16",
-      "listingDate": "2026-09-21",
-      "priceBand": {
-        "min": 40.0,
-        "max": 43.0
-      },
-      "lotSize": "348",
-      "faceValue": 2.0,
-      "issueSize": "₹125.50 Cr",
-      "gmp": {
-        "value": 3.0,
-        "percent": 6.98
-      },
-      "subscriptionTimes": "8.78x"
-    },
     {
       "companyName": "Shakti Polytarp Limited",
       "platform": "SME",
@@ -104,7 +44,7 @@
     {
       "companyName": "Hero Motors Limited",
       "platform": "Mainboard",
-      "status": "upcoming",
+      "status": "open",
       "openDate": "2026-09-16",
       "closeDate": "2026-09-18",
       "listingDate": "2026-09-23",
@@ -124,7 +64,7 @@
     {
       "companyName": "Jindal Supreme (India) Limited",
       "platform": "Mainboard",
-      "status": "upcoming",
+      "status": "open",
       "openDate": "2026-09-16",
       "closeDate": "2026-09-18",
       "listingDate": "2026-09-23",
@@ -144,7 +84,7 @@
     {
       "companyName": "SS Retail Limited",
       "platform": "Mainboard",
-      "status": "upcoming",
+      "status": "open",
       "openDate": "2026-09-16",
       "closeDate": "2026-09-18",
       "listingDate": "2026-09-23",
