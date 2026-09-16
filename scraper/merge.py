@@ -2,11 +2,10 @@
 import argparse
 import json
 import os
+from concurrent.futures import ThreadPoolExecutor
 
-import bse
-import gmp
-import nse
-from common import normalize_name, utcnow_iso
+from . import bse, gmp, nse
+from .common import normalize_name, utcnow_iso
 
 DEFAULT_OUT = os.path.join(os.path.dirname(__file__), "..", "data", "ipos.json")
 
@@ -65,7 +64,7 @@ def _record():
     }
 
 
-def build_merged(nse_data: dict, bse_data: dict, gmp_data: dict) -> list:
+def build_merged(nse_data: dict, bse_data: dict, gmp_data: dict) -> tuple[list, list]:
     by_key = {}
 
     def get_or_create(name):
@@ -139,7 +138,7 @@ def build_merged(nse_data: dict, bse_data: dict, gmp_data: dict) -> list:
             candidates = [k for k in by_key if k.startswith(key) or key.startswith(k)]
             rec = by_key[candidates[0]] if len(candidates) == 1 else None
         if rec is None:
-            unmatched_gmp.append(row["companyName"])
+            unmatched_gmp.append(row)
             continue
         rec["gmp"] = row
         rec["status"] = row.get("status") or rec["status"]
@@ -164,6 +163,7 @@ def _trim(rec: dict) -> dict:
     return {
         "companyName": rec["companyName"],
         "platform": rec["platform"],
+        "exchanges": rec["exchanges"],
         "status": rec["status"],
         "openDate": rec["openDate"],
         "closeDate": rec["closeDate"],
@@ -174,23 +174,51 @@ def _trim(rec: dict) -> dict:
         "issueSize": rec["issueSize"],
         "gmp": gmp_row["gmp"] if gmp_row else None,
         "subscriptionTimes": gmp_row.get("subscriptionTimes") if gmp_row else None,
+        "gmpUpdatedOn": gmp_row.get("updatedOn") if gmp_row else None,
+        "detailUrl": gmp_row.get("detailUrl") if gmp_row else None,
     }
 
 
-def run(out_path: str):
-    nse_data = nse.fetch_all(months_back=0)
-    bse_data = bse.fetch_all()
-    gmp_data = gmp.fetch_all()
+def _source_health(source_data: dict) -> dict:
+    """Expose scrape health without leaking bulky, source-specific payloads."""
+    return {
+        "ok": bool(source_data.get("ok")),
+        "error": source_data.get("error"),
+        "recordCount": sum(
+            len(value) for value in source_data.values() if isinstance(value, list)
+        ),
+    }
 
-    ipos, _unmatched_gmp = build_merged(nse_data, bse_data, gmp_data)
+
+def collect() -> dict:
+    """Fetch all providers concurrently and return the complete public feed."""
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        nse_future = pool.submit(nse.fetch_all, months_back=0)
+        bse_future = pool.submit(bse.fetch_all)
+        gmp_future = pool.submit(gmp.fetch_all)
+        nse_data = nse_future.result()
+        bse_data = bse_future.result()
+        gmp_data = gmp_future.result()
+
+    ipos, unmatched_gmp = build_merged(nse_data, bse_data, gmp_data)
     ipos = [r for r in ipos if r["status"] in _OPEN_STATUSES]
     ipos.sort(key=lambda r: (r["openDate"] or "9999-99-99", r["companyName"] or ""))
     trimmed = [_trim(r) for r in ipos]
 
-    output = {
+    return {
         "generatedAt": utcnow_iso(),
+        "sources": {
+            "nse": _source_health(nse_data),
+            "bse": _source_health(bse_data),
+            "investorGain": _source_health(gmp_data),
+        },
+        "earlyGmp": unmatched_gmp,
         "ipos": trimmed,
     }
+
+
+def run(out_path: str):
+    output = collect()
 
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:

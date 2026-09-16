@@ -6,7 +6,7 @@ MainBoard and SME platforms).
 """
 import requests
 
-from common import USER_AGENT, request_with_retry
+from .common import USER_AGENT, request_with_retry
 
 BASE = "https://api.bseindia.com/BseIndiaAPI/api"
 

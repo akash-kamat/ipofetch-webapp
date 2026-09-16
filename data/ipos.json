@@ -1,9 +1,463 @@
 {
-  "generatedAt": "2026-09-16T12:53:16Z",
+  "generatedAt": "2026-09-16T16:53:04Z",
+  "sources": {
+    "nse": {
+      "ok": true,
+      "error": null,
+      "recordCount": 12
+    },
+    "bse": {
+      "ok": true,
+      "error": null,
+      "recordCount": 12
+    },
+    "investorGain": {
+      "ok": true,
+      "error": null,
+      "recordCount": 37
+    }
+  },
+  "earlyGmp": [
+    {
+      "companyName": "A-One Steels",
+      "status": "upcoming",
+      "category": "IPO",
+      "gmp": {
+        "value": null,
+        "percent": null
+      },
+      "subscriptionTimes": "-",
+      "price": null,
+      "issueSize": "₹405.00 Cr",
+      "lotSize": null,
+      "openDate": "2026-09-24",
+      "closeDate": "2026-09-28",
+      "listingDate": "2026-10-01",
+      "updatedOn": "16-Sep 5:55",
+      "detailUrl": "https://www.investorgain.com/gmp/a-one-steels-ipo/1611/"
+    },
+    {
+      "companyName": "S.K.Offset",
+      "status": "upcoming",
+      "category": "SME",
+      "gmp": {
+        "value": null,
+        "percent": 0.0
+      },
+      "subscriptionTimes": "-",
+      "price": "125",
+      "issueSize": "₹29.06 Cr",
+      "lotSize": "1000",
+      "openDate": "2026-09-23",
+      "closeDate": "2026-09-25",
+      "listingDate": "2026-09-30",
+      "updatedOn": "16-Sep 20:33",
+      "detailUrl": "https://www.investorgain.com/gmp/skoffset-ipo/2304/"
+    },
+    {
+      "companyName": "Himalaya Nutravedics",
+      "status": "upcoming",
+      "category": "SME",
+      "gmp": {
+        "value": null,
+        "percent": 0.0
+      },
+      "subscriptionTimes": "-",
+      "price": "106",
+      "issueSize": "₹26.50 Cr",
+      "lotSize": "1200",
+      "openDate": "2026-09-22",
+      "closeDate": "2026-09-24",
+      "listingDate": "2026-09-29",
+      "updatedOn": "16-Sep 20:29",
+      "detailUrl": "https://www.investorgain.com/gmp/himalaya-nutravedics-ipo/2230/"
+    },
+    {
+      "companyName": "Robokidz Eduventures",
+      "status": "upcoming",
+      "category": "SME",
+      "gmp": {
+        "value": 51.0,
+        "percent": 48.11
+      },
+      "subscriptionTimes": "-",
+      "price": "106",
+      "issueSize": "₹31.09 Cr",
+      "lotSize": "1200",
+      "openDate": "2026-09-21",
+      "closeDate": "2026-09-23",
+      "listingDate": "2026-09-28",
+      "updatedOn": "16-Sep 20:36",
+      "detailUrl": "https://www.investorgain.com/gmp/robokidz-eduventures-ipo/2359/"
+    },
+    {
+      "companyName": "Axiom Gas Engineering",
+      "status": "upcoming",
+      "category": "SME",
+      "gmp": {
+        "value": null,
+        "percent": 0.0
+      },
+      "subscriptionTimes": "-",
+      "price": "53",
+      "issueSize": "₹49.81 Cr",
+      "lotSize": "2000",
+      "openDate": "2026-09-18",
+      "closeDate": "2026-09-22",
+      "listingDate": "2026-09-25",
+      "updatedOn": "16-Sep 20:31",
+      "detailUrl": "https://www.investorgain.com/gmp/axiom-gas-engineering-ipo/1682/"
+    },
+    {
+      "companyName": "NSE",
+      "status": "upcoming",
+      "category": "IPO",
+      "gmp": {
+        "value": 162.0,
+        "percent": 9.08
+      },
+      "subscriptionTimes": "-",
+      "price": "1785",
+      "issueSize": "₹22561.57 Cr",
+      "lotSize": "8",
+      "openDate": "2026-09-17",
+      "closeDate": "2026-09-21",
+      "listingDate": "2026-09-24",
+      "updatedOn": "16-Sep 20:37",
+      "detailUrl": "https://www.investorgain.com/gmp/nse-ipo/2305/"
+    },
+    {
+      "companyName": "Quanto Agroworld",
+      "status": "open",
+      "category": "SME",
+      "gmp": {
+        "value": null,
+        "percent": 0.0
+      },
+      "subscriptionTimes": "0.06x",
+      "price": "67",
+      "issueSize": "₹31.02 Cr",
+      "lotSize": "2000",
+      "openDate": "2026-09-15",
+      "closeDate": "2026-09-17",
+      "listingDate": "2026-09-22",
+      "updatedOn": "16-Sep 20:34",
+      "detailUrl": "https://www.investorgain.com/gmp/quanto-agroworld-ipo/1760/"
+    },
+    {
+      "companyName": "Raksan Transformers",
+      "status": "closed",
+      "category": "SME",
+      "gmp": {
+        "value": 50.0,
+        "percent": 18.32
+      },
+      "subscriptionTimes": "47.43x",
+      "price": "273",
+      "issueSize": "₹150.50 Cr",
+      "lotSize": "400",
+      "openDate": "2026-09-10",
+      "closeDate": "2026-09-15",
+      "listingDate": "2026-09-18",
+      "updatedOn": "16-Sep 20:30",
+      "detailUrl": "https://www.investorgain.com/gmp/raksan-transformers-ipo/2022/"
+    },
+    {
+      "companyName": "Maharaja & Speedex India",
+      "status": "closed",
+      "category": "SME",
+      "gmp": {
+        "value": 25.0,
+        "percent": 13.44
+      },
+      "subscriptionTimes": "32.41x",
+      "price": "186",
+      "issueSize": "₹80.13 Cr",
+      "lotSize": "600",
+      "openDate": "2026-09-10",
+      "closeDate": "2026-09-15",
+      "listingDate": "2026-09-18",
+      "updatedOn": "16-Sep 20:30",
+      "detailUrl": "https://www.investorgain.com/gmp/maharaja-speedex-ipo/2277/"
+    },
+    {
+      "companyName": "Om Galaxy",
+      "status": "closed",
+      "category": "SME",
+      "gmp": {
+        "value": null,
+        "percent": 0.0
+      },
+      "subscriptionTimes": "2.07x",
+      "price": "90",
+      "issueSize": "₹105.00 Cr",
+      "lotSize": "1600",
+      "openDate": "2026-09-10",
+      "closeDate": "2026-09-15",
+      "listingDate": "2026-09-18",
+      "updatedOn": "16-Sep 20:30",
+      "detailUrl": "https://www.investorgain.com/gmp/om-galaxy-ipo/2249/"
+    },
+    {
+      "companyName": "Veegaland Developers",
+      "status": "closed",
+      "category": "IPO",
+      "gmp": {
+        "value": 8.0,
+        "percent": 5.71
+      },
+      "subscriptionTimes": "14.6x",
+      "price": "140",
+      "issueSize": "₹210.00 Cr",
+      "lotSize": "107",
+      "openDate": "2026-09-10",
+      "closeDate": "2026-09-15",
+      "listingDate": "2026-09-18",
+      "updatedOn": "16-Sep 20:31",
+      "detailUrl": "https://www.investorgain.com/gmp/veegaland-developers-ipo/1601/"
+    },
+    {
+      "companyName": "Panchatv Bharat",
+      "status": "closed",
+      "category": "SME",
+      "gmp": {
+        "value": 3.0,
+        "percent": 2.14
+      },
+      "subscriptionTimes": "1.4x",
+      "price": "140",
+      "issueSize": "₹24.58 Cr",
+      "lotSize": "1000",
+      "openDate": "2026-09-10",
+      "closeDate": "2026-09-15",
+      "listingDate": "2026-09-18",
+      "updatedOn": "16-Sep 20:30",
+      "detailUrl": "https://www.investorgain.com/gmp/panchatv-bharat-ipo/1749/"
+    },
+    {
+      "companyName": "Vinod Texworld",
+      "status": "closed",
+      "category": "SME",
+      "gmp": {
+        "value": 1.0,
+        "percent": 1.06
+      },
+      "subscriptionTimes": "1.6x",
+      "price": "94",
+      "issueSize": "₹42.83 Cr",
+      "lotSize": "1200",
+      "openDate": "2026-09-09",
+      "closeDate": "2026-09-11",
+      "listingDate": "2026-09-17",
+      "updatedOn": "16-Sep 20:35",
+      "detailUrl": "https://www.investorgain.com/gmp/vinod-texworld-ipo/1977/"
+    },
+    {
+      "companyName": "LCC Projects",
+      "status": "closed",
+      "category": "IPO",
+      "gmp": {
+        "value": 33.0,
+        "percent": 22.6
+      },
+      "subscriptionTimes": "49.57x",
+      "price": "146",
+      "issueSize": "₹427.14 Cr",
+      "lotSize": "102",
+      "openDate": "2026-09-09",
+      "closeDate": "2026-09-11",
+      "listingDate": "2026-09-17",
+      "updatedOn": "16-Sep 20:37",
+      "detailUrl": "https://www.investorgain.com/gmp/lcc-projects-ipo/1648/"
+    },
+    {
+      "companyName": "Infrax Renewable",
+      "status": "closed",
+      "category": "SME",
+      "gmp": {
+        "value": null,
+        "percent": 0.0
+      },
+      "subscriptionTimes": "2.05x",
+      "price": "104",
+      "issueSize": "₹40.88 Cr",
+      "lotSize": "1200",
+      "openDate": "2026-09-09",
+      "closeDate": "2026-09-11",
+      "listingDate": "2026-09-17",
+      "updatedOn": "16-Sep 20:37",
+      "detailUrl": "https://www.investorgain.com/gmp/infrax-renewable-ipo/2318/"
+    },
+    {
+      "companyName": "Karamtara Engineering",
+      "status": "closed",
+      "category": "IPO",
+      "gmp": {
+        "value": 48.0,
+        "percent": 18.9
+      },
+      "subscriptionTimes": "66.01x",
+      "price": "254",
+      "issueSize": "₹875.00 Cr",
+      "lotSize": "59",
+      "openDate": "2026-09-09",
+      "closeDate": "2026-09-11",
+      "listingDate": "2026-09-17",
+      "updatedOn": "16-Sep 20:31",
+      "detailUrl": "https://www.investorgain.com/gmp/karamtara-engineering-ipo/1622/"
+    },
+    {
+      "companyName": "Rentomojo",
+      "status": "closed",
+      "category": "IPO",
+      "gmp": {
+        "value": 83.0,
+        "percent": 20.54
+      },
+      "subscriptionTimes": "72.89x",
+      "price": "404",
+      "issueSize": "₹1255.57 Cr",
+      "lotSize": "37",
+      "openDate": "2026-09-09",
+      "closeDate": "2026-09-11",
+      "listingDate": "2026-09-17",
+      "updatedOn": "16-Sep 20:31",
+      "detailUrl": "https://www.investorgain.com/gmp/rentomojo-ipo/2231/"
+    },
+    {
+      "companyName": "Asset Reconstruction",
+      "status": "closed",
+      "category": "IPO",
+      "gmp": {
+        "value": 9.0,
+        "percent": 6.47
+      },
+      "subscriptionTimes": "20.1x",
+      "price": "139",
+      "issueSize": "₹732.97 Cr",
+      "lotSize": "107",
+      "openDate": "2026-09-09",
+      "closeDate": "2026-09-11",
+      "listingDate": "2026-09-17",
+      "updatedOn": "16-Sep 20:28",
+      "detailUrl": "https://www.investorgain.com/gmp/asset-reconstruction-ipo/1848/"
+    },
+    {
+      "companyName": "Manipal Payment and Identity Solutions",
+      "status": "closed",
+      "category": "IPO",
+      "gmp": {
+        "value": -15.0,
+        "percent": -4.42
+      },
+      "subscriptionTimes": "1.42x",
+      "price": "339",
+      "issueSize": "₹805.00 Cr",
+      "lotSize": "44",
+      "openDate": "2026-09-09",
+      "closeDate": "2026-09-11",
+      "listingDate": "2026-09-17",
+      "updatedOn": "16-Sep 20:28",
+      "detailUrl": "https://www.investorgain.com/gmp/manipal-payment-and-identity-solutions-ipo/1827/"
+    },
+    {
+      "companyName": "Steamhouse",
+      "status": "closed",
+      "category": "IPO",
+      "gmp": {
+        "value": 14.0,
+        "percent": 17.28
+      },
+      "subscriptionTimes": "32.07x",
+      "price": "81",
+      "issueSize": "₹414.00 Cr",
+      "lotSize": "185",
+      "openDate": "2026-09-09",
+      "closeDate": "2026-09-11",
+      "listingDate": "2026-09-17",
+      "updatedOn": "16-Sep 20:32",
+      "detailUrl": "https://www.investorgain.com/gmp/steamhouse-india-ipo/1823/"
+    },
+    {
+      "companyName": "Amtech Esters",
+      "status": "closed",
+      "category": "SME",
+      "gmp": {
+        "value": 16.0,
+        "percent": 21.33
+      },
+      "subscriptionTimes": "25.7x",
+      "price": "75",
+      "issueSize": "₹17.88 Cr",
+      "lotSize": "1600",
+      "openDate": "2026-09-09",
+      "closeDate": "2026-09-11",
+      "listingDate": "2026-09-17",
+      "updatedOn": "16-Sep 20:28",
+      "detailUrl": "https://www.investorgain.com/gmp/amtech-esters-ipo/1685/"
+    },
+    {
+      "companyName": "Prasol Chemicals",
+      "status": "LN",
+      "category": "IPO",
+      "gmp": {
+        "value": -13.0,
+        "percent": -1.92
+      },
+      "subscriptionTimes": "3.47x",
+      "price": "676",
+      "issueSize": "₹500.00 Cr",
+      "lotSize": "22",
+      "openDate": "2026-09-08",
+      "closeDate": "2026-09-10",
+      "listingDate": "2026-09-16",
+      "updatedOn": "16-Sep 9:36",
+      "detailUrl": "https://www.investorgain.com/gmp/prasol-chemicals-ipo/2030/"
+    },
+    {
+      "companyName": "Glass Wall Systems",
+      "status": "LP",
+      "category": "IPO",
+      "gmp": {
+        "value": 39.0,
+        "percent": 21.43
+      },
+      "subscriptionTimes": "81.65x",
+      "price": "182",
+      "issueSize": "₹427.89 Cr",
+      "lotSize": "82",
+      "openDate": "2026-09-08",
+      "closeDate": "2026-09-10",
+      "listingDate": "2026-09-16",
+      "updatedOn": "16-Sep 9:36",
+      "detailUrl": "https://www.investorgain.com/gmp/glass-wall-systems-ipo/1879/"
+    },
+    {
+      "companyName": "Kanohar Electricals",
+      "status": "LP",
+      "category": "IPO",
+      "gmp": {
+        "value": 182.0,
+        "percent": 28.8
+      },
+      "subscriptionTimes": "90.59x",
+      "price": "632",
+      "issueSize": "₹1055.74 Cr",
+      "lotSize": "23",
+      "openDate": "2026-09-08",
+      "closeDate": "2026-09-10",
+      "listingDate": "2026-09-16",
+      "updatedOn": "16-Sep 9:33",
+      "detailUrl": "https://www.investorgain.com/gmp/kanohar-electricals-ipo/2119/"
+    }
+  ],
   "ipos": [
     {
       "companyName": "Shakti Polytarp Limited",
       "platform": "SME",
+      "exchanges": [
+        "BSE"
+      ],
       "status": "open",
       "openDate": "2026-09-15",
       "closeDate": "2026-09-17",
@@ -19,11 +473,16 @@
         "value": null,
         "percent": 0.0
       },
-      "subscriptionTimes": "0.72x"
+      "subscriptionTimes": "0.72x",
+      "gmpUpdatedOn": "16-Sep 20:32",
+      "detailUrl": "https://www.investorgain.com/gmp/shakti-polytarp-ipo/1782/"
     },
     {
       "companyName": "Vama Wovenfab Limited",
       "platform": "SME",
+      "exchanges": [
+        "BSE"
+      ],
       "status": "open",
       "openDate": "2026-09-15",
       "closeDate": "2026-09-17",
@@ -39,11 +498,17 @@
         "value": 70.0,
         "percent": 20.53
       },
-      "subscriptionTimes": "0.45x"
+      "subscriptionTimes": "0.45x",
+      "gmpUpdatedOn": "16-Sep 20:33",
+      "detailUrl": "https://www.investorgain.com/gmp/vama-wovenfab-ipo/1969/"
     },
     {
       "companyName": "Hero Motors Limited",
       "platform": "Mainboard",
+      "exchanges": [
+        "BSE",
+        "NSE"
+      ],
       "status": "open",
       "openDate": "2026-09-16",
       "closeDate": "2026-09-18",
@@ -59,11 +524,17 @@
         "value": 13.0,
         "percent": 15.48
       },
-      "subscriptionTimes": "1.48x"
+      "subscriptionTimes": "1.48x",
+      "gmpUpdatedOn": "16-Sep 20:36",
+      "detailUrl": "https://www.investorgain.com/gmp/hero-motors-ipo/1688/"
     },
     {
       "companyName": "Jindal Supreme (India) Limited",
       "platform": "Mainboard",
+      "exchanges": [
+        "BSE",
+        "NSE"
+      ],
       "status": "open",
       "openDate": "2026-09-16",
       "closeDate": "2026-09-18",
@@ -79,11 +550,17 @@
         "value": 25.0,
         "percent": 26.88
       },
-      "subscriptionTimes": "7.56x"
+      "subscriptionTimes": "7.56x",
+      "gmpUpdatedOn": "16-Sep 20:29",
+      "detailUrl": "https://www.investorgain.com/gmp/jindal-supreme-ipo/2057/"
     },
     {
       "companyName": "SS Retail Limited",
       "platform": "Mainboard",
+      "exchanges": [
+        "BSE",
+        "NSE"
+      ],
       "status": "open",
       "openDate": "2026-09-16",
       "closeDate": "2026-09-18",
@@ -96,14 +573,19 @@
       "faceValue": 10.0,
       "issueSize": "₹500.00 Cr",
       "gmp": {
-        "value": 105.0,
-        "percent": 24.76
+        "value": 100.0,
+        "percent": 23.58
       },
-      "subscriptionTimes": "1.52x"
+      "subscriptionTimes": "1.52x",
+      "gmpUpdatedOn": "16-Sep 20:34",
+      "detailUrl": "https://www.investorgain.com/gmp/ss-retail-ipo/2076/"
     },
     {
       "companyName": "Kheria Autocomp Limited",
       "platform": "SME",
+      "exchanges": [
+        "NSE"
+      ],
       "status": "upcoming",
       "openDate": "2026-09-17",
       "closeDate": "2026-09-21",
@@ -119,11 +601,17 @@
         "value": 10.0,
         "percent": 9.9
       },
-      "subscriptionTimes": "-"
+      "subscriptionTimes": "-",
+      "gmpUpdatedOn": "16-Sep 20:28",
+      "detailUrl": "https://www.investorgain.com/gmp/kheria-autocomp-ipo/2016/"
     },
     {
       "companyName": "National Stock Exchange of India Limited",
       "platform": "Mainboard",
+      "exchanges": [
+        "BSE",
+        "NSE"
+      ],
       "status": "upcoming",
       "openDate": "2026-09-17",
       "closeDate": "2026-09-21",
@@ -136,11 +624,17 @@
       "faceValue": 1.0,
       "issueSize": null,
       "gmp": null,
-      "subscriptionTimes": null
+      "subscriptionTimes": null,
+      "gmpUpdatedOn": null,
+      "detailUrl": null
     },
     {
       "companyName": "Sonaselection India Limited",
       "platform": "Mainboard",
+      "exchanges": [
+        "BSE",
+        "NSE"
+      ],
       "status": "upcoming",
       "openDate": "2026-09-17",
       "closeDate": "2026-09-21",
@@ -156,11 +650,16 @@
         "value": 7.0,
         "percent": 7.07
       },
-      "subscriptionTimes": "-"
+      "subscriptionTimes": "-",
+      "gmpUpdatedOn": "16-Sep 20:36",
+      "detailUrl": "https://www.investorgain.com/gmp/sonaselection-india-ipo/2059/"
     },
     {
       "companyName": "SpectraA Technology Solutions Limited",
       "platform": "SME",
+      "exchanges": [
+        "NSE"
+      ],
       "status": "upcoming",
       "openDate": "2026-09-17",
       "closeDate": "2026-09-21",
@@ -176,7 +675,59 @@
         "value": 50.0,
         "percent": 42.37
       },
-      "subscriptionTimes": "-"
+      "subscriptionTimes": "-",
+      "gmpUpdatedOn": "16-Sep 20:36",
+      "detailUrl": "https://www.investorgain.com/gmp/spectraa-technology-solutions-ipo/2211/"
+    },
+    {
+      "companyName": "FX MULTITECH LIMITED",
+      "platform": "SME",
+      "exchanges": [
+        "BSE"
+      ],
+      "status": "upcoming",
+      "openDate": "2026-09-21",
+      "closeDate": "2026-09-23",
+      "listingDate": "2026-09-28",
+      "priceBand": {
+        "min": 110.0,
+        "max": 116.0
+      },
+      "lotSize": "1200",
+      "faceValue": 10.0,
+      "issueSize": "₹45.24 Cr",
+      "gmp": {
+        "value": null,
+        "percent": 0.0
+      },
+      "subscriptionTimes": "-",
+      "gmpUpdatedOn": "16-Sep 20:36",
+      "detailUrl": "https://www.investorgain.com/gmp/fx-multitech-ipo/1589/"
+    },
+    {
+      "companyName": "Vivekanand Cotspin Limited",
+      "platform": "SME",
+      "exchanges": [
+        "BSE"
+      ],
+      "status": "upcoming",
+      "openDate": "2026-09-21",
+      "closeDate": "2026-09-23",
+      "listingDate": "2026-09-28",
+      "priceBand": {
+        "min": 32.0,
+        "max": 37.0
+      },
+      "lotSize": "3000",
+      "faceValue": 10.0,
+      "issueSize": "₹24.05 Cr",
+      "gmp": {
+        "value": null,
+        "percent": 0.0
+      },
+      "subscriptionTimes": "-",
+      "gmpUpdatedOn": "16-Sep 20:36",
+      "detailUrl": "https://www.investorgain.com/gmp/vivekanand-cotspin-ipo/1636/"
     }
   ]
 }

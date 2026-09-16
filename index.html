@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Indian IPO market data workspace"><meta name="theme-color" content="#f6f7f9">
+  <title>IPO market data</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232458d3'/%3E%3Cpath d='M8 23V14m8 9V9m8 14V5' stroke='white' stroke-width='3'/%3E%3C/svg%3E"><link rel="stylesheet" href="/styles.css"><script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div><strong>IPO market data</strong><span class="environment">INDIA · NSE / BSE</span></div>
+    <div class="topbar-actions"><span id="sync-state" class="sync-state"><i></i> Connecting</span><span id="updated-at" class="muted">—</span><button id="refresh" class="button" type="button">Refresh sources</button></div>
+  </header>
+  <nav class="tabs" aria-label="Workspace views">
+    <button class="active" data-view="overview">Overview</button><button data-view="issues">Issues <span id="issues-count">0</span></button><button data-view="early">Early GMP <span id="early-count">0</span></button><button data-view="sources">Sources</button>
+  </nav>
+  <main>
+    <div id="error-banner" class="error-banner" hidden></div>
+    <section class="view active" data-panel="overview">
+      <div class="stats" id="stats" aria-label="Market totals"></div>
+      <div class="overview-grid">
+        <section class="panel"><div class="panel-head"><div><h2>Issue schedule</h2><p>Open, close and listing events</p></div></div><div class="table-wrap"><table><thead><tr><th>Company</th><th>Event</th><th>Date</th><th>In</th></tr></thead><tbody id="schedule-body"></tbody></table></div></section>
+        <section class="panel"><div class="panel-head"><div><h2>Market signals</h2><p>Ranked from the current API response</p></div></div><div id="signal-list" class="signal-list"></div></section>
+      </div>
+    </section>
+    <section class="view" data-panel="issues">
+      <div class="toolbar">
+        <label class="search"><span>Search</span><input id="search" type="search" placeholder="Company name"></label>
+        <label><span>Status</span><select id="status-filter"><option value="all">All statuses</option><option value="open">Open</option><option value="upcoming">Upcoming</option></select></label>
+        <label><span>Platform</span><select id="platform-filter"><option value="all">All platforms</option><option value="Mainboard">Mainboard</option><option value="SME">SME</option></select></label>
+        <label class="check"><input id="saved-filter" type="checkbox"> Saved only</label><button id="export-csv" class="button">Export CSV</button>
+      </div>
+      <div class="table-meta"><span id="result-count">0 issues</span><span>Click a company for the complete record</span></div>
+      <div class="table-wrap data-table"><table><thead><tr><th aria-label="Saved"></th><th><button data-sort="companyName">Company</button></th><th><button data-sort="status">Status</button></th><th>Exchange</th><th><button data-sort="openDate">Dates</button></th><th>Price / lot</th><th><button data-sort="investment">Minimum bid</button></th><th><button data-sort="gmp">GMP</button></th><th><button data-sort="subscription">Subscription</button></th><th>Compare</th></tr></thead><tbody id="issues-body"></tbody></table></div>
+    </section>
+    <section class="view" data-panel="early">
+      <div class="panel-head section-head"><div><h2>Early GMP records</h2><p>InvestorGain records not yet matched to an official NSE or BSE issue</p></div><label class="search"><span>Search</span><input id="early-search" type="search" placeholder="Company name"></label></div>
+      <div class="table-wrap data-table"><table><thead><tr><th>Company</th><th>Status / category</th><th>Dates</th><th>Price / lot</th><th>Issue size</th><th>GMP</th><th>Subscription</th><th>Updated</th><th>Source</th></tr></thead><tbody id="early-body"></tbody></table></div>
+    </section>
+    <section class="view" data-panel="sources">
+      <div class="source-layout">
+        <section class="panel"><div class="panel-head"><div><h2>Provider status</h2><p>Health returned by the backend for this collection</p></div></div><div id="source-list" class="source-list"></div></section>
+        <section class="panel"><div class="panel-head"><div><h2>Response metadata</h2><p>How the current dataset was served</p></div></div><dl id="response-meta" class="metadata"></dl></section>
+      </div><p class="disclaimer">NSE and BSE endpoints are public but unofficial. GMP is unregulated market sentiment, not investment advice.</p>
+    </section>
+  </main>
+  <aside id="compare-tray" class="compare-tray" hidden><span><strong id="compare-count">0</strong> selected</span><div id="compare-names"></div><button id="clear-compare">Clear</button><button id="open-compare" class="button primary">Compare</button></aside>
+  <dialog id="detail-dialog"><div id="detail-content"></div><button class="dialog-close" data-close="detail-dialog" aria-label="Close">×</button></dialog>
+  <dialog id="compare-dialog" class="wide-dialog"><div id="compare-content"></div><button class="dialog-close" data-close="compare-dialog" aria-label="Close">×</button></dialog>
+</body>
+</html>

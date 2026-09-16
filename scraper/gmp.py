@@ -17,7 +17,7 @@ from datetime import datetime
 
 import requests
 
-from common import USER_AGENT, request_with_retry, strip_html
+from .common import USER_AGENT, request_with_retry, strip_html
 
 API_BASE = "https://webnodejs.investorgain.com/cloud/v2/report/data-read"
 REPORT_ID = 331  # live IPO GMP report

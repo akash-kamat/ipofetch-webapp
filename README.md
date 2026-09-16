@@ -1,109 +1,79 @@
-# ipo-data-pipeline
+# IPO market data
 
-Scrapes Indian IPO data (Mainboard + SME) from NSE and BSE's unofficial public
-endpoints, merges it with Grey Market Premium (GMP) data scraped from
-InvestorGain, and writes a single combined JSON feed at `data/ipos.json`.
+A Vercel-ready web application for live Indian IPO monitoring. A FastAPI
+backend collects NSE, BSE, and InvestorGain data; the frontend uses the API
+exclusively and provides issue tracking, comparisons, saved issues, CSV export,
+early-GMP coverage, and provider diagnostics.
 
-None of NSE, BSE, or InvestorGain publish an official developer API. Every
-endpoint used here was found by inspecting network requests made by their own
-websites, and can change or start blocking requests without notice.
+## Architecture
 
-## Layout
-
-```
-scraper/
-  common.py   # shared HTTP session/retry helpers, name normalization
-  nse.py      # NSE current / upcoming / past issue endpoints
-  bse.py      # BSE public issue list endpoint
-  gmp.py      # InvestorGain live GMP JSON endpoint
-  merge.py    # runs all three scrapers, joins by company name, writes data/ipos.json
-data/
-  ipos.json   # generated output (committed by the GitHub Action)
-.github/workflows/scrape.yml  # scheduled scrape + commit
+```text
+NSE current/upcoming ─┐
+BSE public issues ────┼─ concurrent collection ─ normalization ─ FastAPI ─ UI
+InvestorGain GMP ─────┘                              │
+                                      last-known-good JSON fallback
 ```
 
-## Running locally
+`GET /api/market` refreshes all providers on a cold process, then caches the
+result for 15 minutes. `POST /api/refresh` forces a live collection. If every
+provider fails, the API serves `data/ipos.json` as a last-known-good response;
+the browser never reads that file directly.
 
-```
-pip install -r requirements.txt
-cd scraper
-python merge.py --out ../data/ipos.json
-```
+The response includes every normalized official issue field, complete unmatched
+GMP records, source health and record counts, computed market totals, and
+delivery metadata. API documentation is available at `/api/docs`.
 
-Each scraper can also be run standalone for debugging (`python nse.py`,
-`python bse.py`, `python gmp.py`) — each prints its own JSON to stdout.
+## Features
 
-## Data sources & how they're fetched
+- Open/upcoming issue totals, current event schedule, capital and GMP metrics
+- Search, status/platform filters, column sorting, and local saved issues
+- Two- or three-company comparison with price, dates, GMP, and subscription data
+- Complete record drawer including face value, exchanges, minimum bid, estimated
+  listing price, timestamps, and source link
+- CSV export of the current filtered issue set
+- Full early-GMP table for records that do not yet match NSE/BSE
+- Live provider health, row counts, cache mode, and response timestamps
 
-| Source | Endpoint | Notes |
-|---|---|---|
-| NSE | `nseindia.com/api/ipo-current-issue`, `/api/all-upcoming-issues?category=ipo`, `/api/public-past-issues` | Requires a "cookie warm-up": fetch the public IPO page first to get session cookies (Akamai blocks cold API requests), then reuse the session with a matching `Referer` header. |
-| BSE | `api.bseindia.com/BseIndiaAPI/api/GetPublicIssue_par_updated/w?flag=1&status=&exchange=&ir_flag=IPO` | No cookies needed, just a `Referer: https://www.bseindia.com/` header. Returns a fairly narrow near-term window (live/recent forthcoming issues), not full history. |
-| GMP | `webnodejs.investorgain.com/cloud/v2/report/data-read/331/{page}/{month}/{year}/{fy}/0/all` | This is the JSON API InvestorGain's own frontend calls — found by intercepting network requests, since the public GMP page (`investorgain.com/report/live-ipo-gmp/331/ipo/`) renders its table client-side and is empty in the raw HTML. `Name` and `GMP` fields come back as HTML fragments and are parsed with regex in `gmp.py`. |
+## Local development
 
-## Output schema (`data/ipos.json`)
+Use `uv` for all Python work:
 
-Only **open** or **upcoming** IPOs are included — no past/listed IPOs, and no
-raw per-source data. Each record has exactly these fields:
-
-```json
-{
-  "generatedAt": "2026-09-13T05:53:53Z",
-  "ipos": [
-    {
-      "companyName": "Raksan Transformers Limited",
-      "platform": "SME",
-      "status": "open",
-      "openDate": "2026-09-10",
-      "closeDate": "2026-09-15",
-      "listingDate": "2026-09-18",
-      "priceBand": { "min": 258.0, "max": 273.0 },
-      "lotSize": "400",
-      "faceValue": 10.0,
-      "issueSize": "₹150.50 Cr",
-      "gmp": { "value": 30.0, "percent": 10.99 },
-      "subscriptionTimes": "1.31x"
-    }
-  ]
-}
+```bash
+uv sync
+uv run uvicorn api.index:app --reload
 ```
 
-`gmp` and `subscriptionTimes` are `null` when InvestorGain hasn't quoted a
-GMP for that IPO yet — not a scrape failure.
+Open <http://127.0.0.1:8000>. Run the suite with:
 
-## Known limitations / caveats
+```bash
+uv run pytest
+```
 
-- **Not all GMP-tracked IPOs match an official record.** InvestorGain tracks
-  IPOs earlier (from draft filings/rumor) than NSE/BSE publish official
-  forthcoming-issue data for. In a typical run, ~15-20 GMP rows won't have a
-  matching BSE/NSE entry yet — this is expected, not a matching bug. These are
-  listed in `unmatchedGmpNames` rather than silently dropped.
-- **GMP is inherently unofficial, self-reported data** from grey-market
-  chatter, published by InvestorGain "for informational purposes only" — treat
-  it as a rough sentiment indicator, not a reliable number.
-- **NSE occasionally blocks datacenter IPs**, including GitHub Actions
-  runners, even with a correct cookie warm-up. If the scheduled workflow
-  starts failing with 401/403 from NSE specifically, that's the likely cause —
-  BSE and GMP scraping are unaffected since they don't depend on NSE's
-  session/IP reputation.
-- **All three endpoints are undocumented and reverse-engineered** from what
-  each site's own frontend calls. They can change field names, move, or
-  start requiring new headers/auth at any time with no notice. `merge.py`
-  records `ok`/`error` per source in the output so a broken source degrades
-  gracefully instead of failing the whole run (if one source errors, the
-  other two still get merged and written).
-- Be a good citizen: the request gap (`REQUEST_GAP_SECONDS` in `common.py`)
-  and the workflow's twice-daily schedule are intentionally conservative.
-  Don't lower them without a reason — these are public sites, not APIs meant
-  for high-frequency polling.
+Refresh the committed fallback snapshot:
 
-## Consuming this feed from your site
+```bash
+uv run python -m scraper.merge --out data/ipos.json
+```
 
-Once pushed to GitHub with the Action enabled, the JSON is fetchable directly
-(no build step) from either:
+## API
 
-- `https://raw.githubusercontent.com/<you>/ipo-data-pipeline/main/data/ipos.json`
-- or via GitHub Pages if enabled: `https://<you>.github.io/ipo-data-pipeline/data/ipos.json`
+- `GET /api/market` — complete market payload; live on cold start, then cached
+- `GET /api/market?refresh=true` — bypass the process cache
+- `POST /api/refresh` — force collection from all three providers
+- `GET /api/ipos/{normalized-company-name}` — one normalized issue record
+- `GET /api/health` — service liveness
+- `GET /api/docs` — interactive OpenAPI documentation
 
-Both serve with permissive CORS, so your website's frontend can `fetch()` it
-directly.
+## Vercel deployment
+
+Import the repository into Vercel and deploy. `vercel.json` routes `/api/*` to
+the FastAPI function, gives live collection up to 60 seconds, and leaves the
+HTML/CSS/JS as edge-served static assets. There are no required environment
+variables or external databases.
+
+Vercel function memory is reusable but not durable, so the 15-minute cache is
+best-effort per warm instance. The committed snapshot provides cold-start outage
+fallback, while the included GitHub Action refreshes it every two hours.
+
+NSE/BSE endpoints are public but unofficial and may change. GMP is unregulated
+market sentiment and should not be treated as investment advice.

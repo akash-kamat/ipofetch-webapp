@@ -1,0 +1,20 @@
+[project]
+name = "ipofetch"
+version = "0.1.0"
+description = "Indian IPO data API and market operations dashboard"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "beautifulsoup4>=4.12",
+    "fastapi>=0.115",
+    "lxml>=5.0",
+    "requests>=2.31",
+    "uvicorn>=0.34",
+]
+
+[dependency-groups]
+dev = ["httpx>=0.28", "pytest>=8.3"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

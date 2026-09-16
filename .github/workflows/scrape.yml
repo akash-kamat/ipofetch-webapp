@@ -18,16 +18,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.11"
+          version: "0.9.26"
+          enable-cache: true
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: uv sync --frozen --no-dev
 
       - name: Run scrapers and merge
-        working-directory: scraper
-        run: python merge.py --out ../data/ipos.json
+        run: uv run --frozen python -m scraper.merge --out data/ipos.json
 
       - name: Commit updated data
         run: |

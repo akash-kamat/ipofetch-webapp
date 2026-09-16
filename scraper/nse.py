@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 
 import requests
 
-from common import USER_AGENT, request_with_retry, strip_html
+from .common import USER_AGENT, request_with_retry, strip_html
 
 BASE = "https://www.nseindia.com"
 WARMUP_PATH = "/market-data/all-upcoming-issues-ipo"
