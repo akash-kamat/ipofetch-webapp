@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T01:56:01Z",
+  "generatedAt": "2026-09-16T06:57:59Z",
   "ipos": [
     {
       "companyName": "Shakti Polytarp Limited",
@@ -36,10 +36,10 @@
       "faceValue": 10.0,
       "issueSize": "₹49.54 Cr",
       "gmp": {
-        "value": 30.0,
-        "percent": 8.8
+        "value": 55.0,
+        "percent": 16.13
       },
-      "subscriptionTimes": "0.01x"
+      "subscriptionTimes": "0.05x"
     },
     {
       "companyName": "Hero Motors Limited",
@@ -56,10 +56,10 @@
       "faceValue": 10.0,
       "issueSize": "₹1000.00 Cr",
       "gmp": {
-        "value": 19.0,
-        "percent": 22.62
+        "value": 10.0,
+        "percent": 11.9
       },
-      "subscriptionTimes": "-"
+      "subscriptionTimes": "0.8x"
     },
     {
       "companyName": "Jindal Supreme (India) Limited",
@@ -79,7 +79,7 @@
         "value": 27.0,
         "percent": 29.03
       },
-      "subscriptionTimes": "-"
+      "subscriptionTimes": "3.06x"
     },
     {
       "companyName": "SS Retail Limited",
@@ -96,10 +96,10 @@
       "faceValue": 10.0,
       "issueSize": "₹500.00 Cr",
       "gmp": {
-        "value": 128.0,
-        "percent": 30.19
+        "value": 95.0,
+        "percent": 22.41
       },
-      "subscriptionTimes": "-"
+      "subscriptionTimes": "0.59x"
     },
     {
       "companyName": "Kheria Autocomp Limited",
