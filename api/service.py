@@ -24,13 +24,15 @@ class MarketService:
         self.repository = repository
 
     def get_market(self, force: bool = False) -> dict:
-        stored = self.repository.load_current()
-        if not force and stored and not _is_stale(stored):
+        trigger = "manual" if force else "stale"
+        stored = None if force else self.repository.load_current()
+        if stored and not _is_stale(stored):
             return _with_meta(stored.payload, "database")
 
-        trigger = "manual" if force else "stale"
         refresh_id = self.repository.start_refresh(trigger)
         if refresh_id is None:
+            if stored is None:
+                stored = self.repository.load_current()
             if stored:
                 delivery = "stale" if _is_stale(stored) else "database"
                 return _with_meta(stored.payload, delivery, refresh_in_progress=True)
@@ -52,6 +54,8 @@ class MarketService:
                 self.repository.save_failure(refresh_id, str(exc))
             except Exception:
                 LOGGER.exception("Could not persist refresh failure")
+            if stored is None:
+                stored = self.repository.load_current()
             if stored:
                 return _with_meta(stored.payload, "stale")
             raise MarketUnavailable("No market data is currently available") from exc

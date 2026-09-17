@@ -7,9 +7,9 @@ import uuid
 from dataclasses import dataclass
 from datetime import datetime
 
-import psycopg
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
+from psycopg_pool import ConnectionPool
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS market_refreshes (
@@ -91,13 +91,24 @@ class MarketRepository:
     def __init__(self, database_url: str | None = None):
         self.database_url = database_url or os.getenv("DATABASE_URL")
         self._schema_ready = False
+        self._pool = (
+            ConnectionPool(
+                conninfo=self.database_url,
+                min_size=0,
+                max_size=2,
+                timeout=10,
+                max_idle=300,
+                kwargs={"connect_timeout": 10, "row_factory": dict_row},
+                open=True,
+            )
+            if self.database_url
+            else None
+        )
 
     def _connect(self):
-        if not self.database_url:
+        if self._pool is None:
             raise RuntimeError("DATABASE_URL is not configured")
-        return psycopg.connect(
-            self.database_url, connect_timeout=10, row_factory=dict_row
-        )
+        return self._pool.connection()
 
     def _ensure_schema(self) -> None:
         if self._schema_ready:
