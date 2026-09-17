@@ -81,3 +81,10 @@ def test_ipo_detail_accepts_stable_issue_key(monkeypatch):
     response = TestClient(index.app).get("/api/ipos/example")
     assert response.status_code == 200
     assert response.json()["companyName"] == "Example Limited"
+
+
+def test_removed_analysis_routes_are_not_in_api_schema():
+    paths = TestClient(index.app).get("/api/openapi.json").json()["paths"]
+
+    assert "/api/analysis/status" not in paths
+    assert "/api/ipos/{company_key}/analysis" not in paths

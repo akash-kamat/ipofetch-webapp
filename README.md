@@ -44,8 +44,6 @@ Copy `.env.example` to `.env` and set your Neon connection string:
 
 ```dotenv
 DATABASE_URL=postgresql://user:password@host/database?sslmode=require
-OPENROUTER_API_KEY=sk-or-v1-your-key
-OPENROUTER_MODEL=google/gemini-2.5-flash
 APP_URL=http://127.0.0.1:8000
 ```
 
@@ -69,21 +67,15 @@ node --check app.js
 - `GET /api/market` — all open, upcoming, and recently closed issues
 - `POST /api/refresh` — manual provider refresh
 - `GET /api/ipos/{issue-key}` — one normalized issue
-- `GET /api/analysis/status` — OpenRouter configuration status
-- `GET /api/ipos/{issue-key}/analysis` — latest cached AI report
-- `POST /api/ipos/{issue-key}/analysis` — generate or reuse a grounded AI report
 - `GET /api/health` — service liveness
 - `GET /api/docs` — interactive OpenAPI documentation
 
 ## Vercel deployment
 
-Import the repository into Vercel and add `DATABASE_URL`, `OPENROUTER_API_KEY`,
-`OPENROUTER_MODEL`, and `APP_URL` to the project’s environment variables. The
-included `vercel.json` configures the FastAPI function. No scheduled GitHub
-workflow or committed data snapshot is used. AI reports use OpenRouter's
-Firecrawl-backed web-search plugin, are stored in Neon, and are reused while
-their authoritative market input is unchanged. Firecrawl is managed through
-OpenRouter, so it does not require a separate API key.
+Import the repository into Vercel and add `DATABASE_URL` and `APP_URL` to the
+project’s environment variables. The included `vercel.json` configures the
+FastAPI function. No scheduled GitHub workflow or committed data snapshot is
+used.
 
 NSE/BSE endpoints are public but unofficial and may change. GMP is unregulated
 market sentiment and is not investment advice.
