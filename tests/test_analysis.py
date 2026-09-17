@@ -1,7 +1,11 @@
+import requests
+
 from api.analysis import (
     OpenRouterClient,
+    _analysis_snapshot,
     _finalize_report,
     _gmp_score,
+    _parse_json,
     _qib_score,
     _subscription_metrics,
     _total_score,
@@ -92,7 +96,96 @@ def test_openrouter_request_uses_web_search_and_strict_schema():
     assert body["plugins"][0]["engine"] == "firecrawl"
     assert body["response_format"]["type"] == "json_schema"
     assert body["response_format"]["json_schema"]["strict"] is True
+    assert "provider" not in body
     assert "12.4" in body["messages"][1]["content"]
+
+
+def test_analysis_snapshot_removes_duplicate_raw_bid_counts():
+    issue = {
+        **ISSUE,
+        "subscription": {
+            **ISSUE["subscription"],
+            "nseBidDetails": [
+                {
+                    "category": "Retail",
+                    "sharesOffered": 100,
+                    "sharesBid": 200,
+                    "times": 2,
+                }
+            ],
+        },
+    }
+
+    snapshot = _analysis_snapshot(issue)
+
+    assert "nseBidDetails" not in snapshot["subscription"]
+    assert snapshot["subscription"]["consolidatedBidDetails"][0] == {
+        "category": "Qualified Institutional Buyers (QIBs)",
+        "times": 12.4,
+    }
+
+
+def test_parse_json_accepts_reasoning_before_the_object():
+    assert _parse_json('<think>research notes</think>\n{"result":"ok"}') == {
+        "result": "ok"
+    }
+
+
+def test_compatibility_request_keeps_search_and_moves_schema_into_prompt():
+    client = OpenRouterClient(api_key="test", model="vendor/model")
+    body = client.request_body(ISSUE, "2026-09-17T06:00:00Z")
+
+    compatible = client.compatibility_request_body(body)
+
+    assert "response_format" not in compatible
+    assert "provider" not in compatible
+    assert compatible["plugins"] == [body["plugins"][0]]
+    assert '"issueStructure"' in compatible["messages"][-1]["content"]
+    assert "output contract" in compatible["messages"][-1]["content"]
+
+
+def test_parameter_routing_failure_retries_with_compatibility_body(monkeypatch):
+    class FakeResponse:
+        def __init__(self, payload, status_code=200):
+            self.payload = payload
+            self.status_code = status_code
+
+        def raise_for_status(self):
+            if self.status_code >= 400:
+                raise requests.HTTPError(response=self)
+
+        def json(self):
+            return self.payload
+
+    calls = []
+
+    def fake_post(*args, **kwargs):
+        calls.append(kwargs["json"])
+        if len(calls) == 1:
+            return FakeResponse(
+                {
+                    "error": {
+                        "message": "No endpoints found that can handle the requested parameters"
+                    }
+                },
+                404,
+            )
+        return FakeResponse(
+            {
+                "choices": [{"message": {"content": '{"result":"ok"}'}}],
+                "usage": {"total_tokens": 1},
+            }
+        )
+
+    monkeypatch.setattr("api.analysis.requests.post", fake_post)
+    client = OpenRouterClient(api_key="test", model="vendor/model")
+
+    report, usage = client.analyse(ISSUE, "2026-09-17T06:00:00Z")
+
+    assert report == {"result": "ok", "sources": []}
+    assert usage == {"total_tokens": 1}
+    assert "response_format" in calls[0]
+    assert "response_format" not in calls[1]
 
 
 def test_final_report_uses_authoritative_market_scores():

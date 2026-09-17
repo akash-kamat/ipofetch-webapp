@@ -6,6 +6,7 @@ import hashlib
 import json
 import logging
 import os
+from copy import deepcopy
 from datetime import UTC, datetime
 from typing import Any
 
@@ -45,19 +46,17 @@ class OpenRouterClient:
 
         body = self.request_body(issue, market_generated_at)
         try:
-            response = requests.post(
-                OPENROUTER_URL,
-                headers={
-                    "Authorization": f"Bearer {self.api_key}",
-                    "Content-Type": "application/json",
-                    "HTTP-Referer": self.site_url,
-                    "X-OpenRouter-Title": "IPO Fetch",
-                },
-                json=body,
-                timeout=(10, 48),
-            )
-            response.raise_for_status()
-            payload = response.json()
+            try:
+                payload = self._post(body)
+            except requests.HTTPError as exc:
+                if not _is_parameter_routing_error(exc):
+                    raise
+                LOGGER.info(
+                    "Model %s has no strict structured-output route; retrying with "
+                    "prompted JSON and application validation",
+                    self.model,
+                )
+                payload = self._post(self.compatibility_request_body(body))
             message = payload["choices"][0]["message"]
             content = message.get("content")
             if not content:
@@ -70,6 +69,21 @@ class OpenRouterClient:
         except (requests.RequestException, KeyError, ValueError, TypeError) as exc:
             detail = _safe_provider_error(exc)
             raise AnalysisUnavailable(f"OpenRouter analysis failed: {detail}") from exc
+
+    def _post(self, body: dict) -> dict:
+        response = requests.post(
+            OPENROUTER_URL,
+            headers={
+                "Authorization": f"Bearer {self.api_key}",
+                "Content-Type": "application/json",
+                "HTTP-Referer": self.site_url,
+                "X-OpenRouter-Title": "IPO Fetch",
+            },
+            json=body,
+            timeout=(10, 48),
+        )
+        response.raise_for_status()
+        return response.json()
 
     def request_body(self, issue: dict, market_generated_at: str) -> dict:
         schema = AnalysisReport.model_json_schema(by_alias=True)
@@ -99,10 +113,31 @@ class OpenRouterClient:
                     "schema": schema,
                 },
             },
-            "provider": {"require_parameters": True},
             "temperature": 0.1,
             "max_tokens": 8000,
         }
+
+    @staticmethod
+    def compatibility_request_body(body: dict) -> dict:
+        """Build a request for models that cannot enforce response_format."""
+        compatible = deepcopy(body)
+        compatible.pop("response_format")
+        compatible.pop("provider", None)
+        compatible["plugins"] = [
+            plugin
+            for plugin in compatible.get("plugins", [])
+            if plugin.get("id") != "response-healing"
+        ]
+        compatible["messages"][-1]["content"] += (
+            "\n\nReturn one raw JSON object (no Markdown or code fences) using exactly "
+            "this output contract. Keep every key. Use null or 'data unavailable' when "
+            "research cannot establish a value. Legal stage must be one of: none found, "
+            "allegation, investigation, notice, order, court finding, conviction, or "
+            "unavailable. Verdict must be STRONG APPLY, APPLY WITH CAUTION, AVOID / WAIT, "
+            "or SKIP. Apply decision must be APPLY, APPLY WITH CAUTION, or SKIP:\n"
+            + COMPATIBILITY_OUTPUT_CONTRACT
+        )
+        return compatible
 
 
 class AnalysisService:
@@ -358,7 +393,13 @@ def _parse_json(content: Any) -> dict:
     text = str(content).strip()
     if text.startswith("```"):
         text = text.split("\n", 1)[-1].rsplit("```", 1)[0]
-    value = json.loads(text)
+    try:
+        value = json.loads(text)
+    except json.JSONDecodeError:
+        object_start = text.find("{")
+        if object_start < 0:
+            raise
+        value, _ = json.JSONDecoder().raw_decode(text[object_start:])
     if not isinstance(value, dict):
         raise TypeError("analysis was not a JSON object")
     return value
@@ -394,6 +435,17 @@ def _safe_provider_error(exc: Exception) -> str:
     return str(exc)[:300]
 
 
+def _is_parameter_routing_error(exc: requests.HTTPError) -> bool:
+    if exc.response is None:
+        return False
+    try:
+        message = str(exc.response.json().get("error", {}).get("message", ""))
+    except (ValueError, AttributeError):
+        return False
+    lowered = message.lower()
+    return "no endpoints found" in lowered and "requested parameters" in lowered
+
+
 def _envelope(row: dict, cached: bool) -> dict:
     generated = row["generated_at"]
     if isinstance(generated, datetime):
@@ -411,9 +463,35 @@ def _envelope(row: dict, cached: bool) -> dict:
 
 SYSTEM_PROMPT = """You are a cautious Indian IPO research analyst. Analyse only for short-term listing gains, never long-term investing. Use current web research and prioritise SEBI, NSE/BSE, the issuer RHP/DRHP, court/regulator records, company filings, and reputable financial publications. Treat the application-supplied NSE subscription snapshot as authoritative and never replace it with a web value. Clearly separate facts from analysis. Never invent unavailable information. Distinguish allegation, investigation, notice, regulatory order, court finding and conviction. Every material current claim must have a source. Return only the requested JSON schema."""
 
+COMPATIBILITY_OUTPUT_CONTRACT = """{
+  "dataAsOf": "string",
+  "issueStructure": {"issueSize":"string","freshIssue":"string","ofs":"string","priceBand":"string","lotSize":"string","minimumInvestment":"string","useOfProceeds":["string"],"promoterHoldingBefore":"string","promoterHoldingAfter":"string","sources":[{"title":"string","url":"https://...","publishedAt":null}]},
+  "subscription": {"qibTimes":null,"niiTimes":null,"retailTimes":null,"employeeOrShareholderTimes":null,"totalTimes":null,"asOf":"string","qibDemandExplanation":"string","qibScore":{"score":0,"maximum":20,"rationale":"string"},"totalScore":{"score":0,"maximum":10,"rationale":"string"}},
+  "gmp": {"currentGmp":null,"currentPercent":null,"trend":"string","impliedListingPrice":null,"expectedListingGain":"string","score":{"score":0,"maximum":20,"rationale":"string"},"sources":[{"title":"string","url":"https://...","publishedAt":null}]},
+  "legal": {"summary":"string","findings":[{"topic":"string","stage":"unavailable","finding":"string","pointsDeducted":0,"sources":[{"title":"string","url":"https://...","publishedAt":null}]}],"score":{"score":0,"maximum":25,"rationale":"string"}},
+  "valuation": {"metrics":["string"],"peers":[{"company":"string","metrics":"string","sources":[{"title":"string","url":"https://...","publishedAt":null}]}],"summary":"string","score":{"score":0,"maximum":8,"rationale":"string"}},
+  "market": {"summary":"string","facts":["string"],"score":{"score":0,"maximum":5,"rationale":"string"},"sources":[{"title":"string","url":"https://...","publishedAt":null}]},
+  "industry": {"summary":"string","facts":["string"],"score":{"score":0,"maximum":3,"rationale":"string"},"sources":[{"title":"string","url":"https://...","publishedAt":null}]},
+  "anchorInvestors": {"summary":"string","facts":["string"],"score":{"score":0,"maximum":4,"rationale":"string"},"sources":[{"title":"string","url":"https://...","publishedAt":null}]},
+  "freshOfs": {"summary":"string","facts":["string"],"score":{"score":0,"maximum":3,"rationale":"string"},"sources":[{"title":"string","url":"https://...","publishedAt":null}]},
+  "fundamentals": {"summary":"string","facts":["string"],"score":{"score":0,"maximum":2,"rationale":"string"},"sources":[{"title":"string","url":"https://...","publishedAt":null}]},
+  "totalScore": 0,
+  "verdict": "SKIP",
+  "applyDecision": "SKIP",
+  "hardRedFlag": false,
+  "hardRedFlagReason": "string",
+  "listingGain": {"bearCase":"string","baseCase":"string","bullCase":"string","expectedGainPercent":"string","expectedPriceRange":"string"},
+  "reasons": ["string"],
+  "sources": [{"title":"string","url":"https://...","publishedAt":null}],
+  "dataLimitations": ["string"],
+  "disclaimer": "string"
+}"""
+
 
 def _user_prompt(issue: dict, market_generated_at: str) -> str:
-    snapshot = json.dumps(issue, ensure_ascii=False, separators=(",", ":"))
+    snapshot = json.dumps(
+        _analysis_snapshot(issue), ensure_ascii=False, separators=(",", ":")
+    )
     return f"""Analyse {issue.get("companyName")} strictly for whether a retail investor should apply for listing gains. Current date: {datetime.now(UTC).date().isoformat()}.
 
 AUTHORITATIVE APPLICATION DATA (generated {market_generated_at}):
@@ -434,3 +512,40 @@ Scoring rubric (exact):
 - Fundamentals /2: growth, margins, cash flow, debt and business quality.
 
 The weights total 100. Recommend STRONG APPLY for 80-100, APPLY WITH CAUTION for 65-79, AVOID / WAIT for 50-64 and SKIP below 50. If legal is below 10/25, never return STRONG APPLY. A genuine hard red flag may override the numerical result. Include bear/base/bull listing cases, expected gain and expected price range, 5-10 concise decision reasons, limitations, and deduplicated sources with direct URLs. This is research, not a guarantee."""
+
+
+def _analysis_snapshot(issue: dict) -> dict:
+    """Keep authoritative market inputs while avoiding duplicate raw bid payloads."""
+    subscription = issue.get("subscription") or {}
+    rows = subscription.get("consolidatedBidDetails") or subscription.get(
+        "nseBidDetails", []
+    )
+    return {
+        key: issue.get(key)
+        for key in (
+            "issueKey",
+            "companyName",
+            "platform",
+            "exchanges",
+            "status",
+            "openDate",
+            "closeDate",
+            "listingDate",
+            "priceBand",
+            "lotSize",
+            "faceValue",
+            "issueSize",
+            "gmp",
+            "gmpUpdatedOn",
+            "detailUrl",
+        )
+    } | {
+        "subscription": {
+            "totalTimes": subscription.get("totalTimes"),
+            "updatedAt": subscription.get("updatedAt"),
+            "consolidatedBidDetails": [
+                {"category": row.get("category"), "times": row.get("times")}
+                for row in rows
+            ],
+        }
+    }
