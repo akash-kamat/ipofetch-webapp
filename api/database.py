@@ -76,6 +76,27 @@ CREATE TABLE IF NOT EXISTS market_refresh_state (
 ALTER TABLE market_refresh_state ADD COLUMN IF NOT EXISTS lock_owner uuid;
 INSERT INTO market_refresh_state(singleton) VALUES (true)
 ON CONFLICT (singleton) DO NOTHING;
+CREATE TABLE IF NOT EXISTS ipo_analysis_reports (
+    id uuid PRIMARY KEY,
+    issue_key text NOT NULL,
+    company_name text NOT NULL,
+    input_fingerprint text NOT NULL,
+    model text NOT NULL,
+    generated_at timestamptz NOT NULL DEFAULT now(),
+    market_generated_at text NOT NULL,
+    report jsonb NOT NULL,
+    usage jsonb,
+    UNIQUE (issue_key, input_fingerprint)
+);
+CREATE INDEX IF NOT EXISTS ipo_analysis_reports_latest_idx
+ON ipo_analysis_reports(issue_key, generated_at DESC);
+CREATE TABLE IF NOT EXISTS ipo_analysis_state (
+    issue_key text PRIMARY KEY,
+    lock_token uuid,
+    input_fingerprint text,
+    locked_until timestamptz,
+    last_generated_at timestamptz
+);
 """
 
 
@@ -318,6 +339,116 @@ class MarketRepository:
             "ipos": issues,
         }
         return StoredMarket(payload=payload, completed_at=refresh["completed_at"])
+
+    def load_analysis(
+        self, issue_key: str, fingerprint: str | None = None
+    ) -> dict | None:
+        self._ensure_schema()
+        where = "issue_key = %s"
+        parameters: list[str] = [issue_key]
+        if fingerprint:
+            where += " AND input_fingerprint = %s"
+            parameters.append(fingerprint)
+        with self._connect() as connection:
+            row = connection.execute(
+                f"""
+                SELECT issue_key, company_name, generated_at, market_generated_at,
+                       model, report
+                FROM ipo_analysis_reports
+                WHERE {where}
+                ORDER BY generated_at DESC LIMIT 1
+                """,
+                parameters,
+            ).fetchone()
+        return dict(row) if row else None
+
+    def start_analysis(self, issue_key: str, fingerprint: str, force: bool = False):
+        """Claim a generation lease with per-issue spend protection."""
+        self._ensure_schema()
+        token = uuid.uuid4()
+        with self._connect() as connection:
+            row = connection.execute(
+                """
+                INSERT INTO ipo_analysis_state(
+                    issue_key, lock_token, input_fingerprint, locked_until
+                ) VALUES (%s, %s, %s, now() + interval '5 minutes')
+                ON CONFLICT (issue_key) DO UPDATE
+                SET lock_token = EXCLUDED.lock_token,
+                    input_fingerprint = EXCLUDED.input_fingerprint,
+                    locked_until = EXCLUDED.locked_until
+                WHERE (ipo_analysis_state.locked_until IS NULL
+                       OR ipo_analysis_state.locked_until < now())
+                  AND (ipo_analysis_state.last_generated_at IS NULL
+                       OR ipo_analysis_state.last_generated_at < now()
+                          - CASE WHEN %s THEN interval '30 minutes'
+                                 ELSE interval '15 minutes' END)
+                RETURNING lock_token
+                """,
+                (issue_key, token, fingerprint, force),
+            ).fetchone()
+        return token if row else None
+
+    def save_analysis(
+        self,
+        token,
+        issue_key: str,
+        company_name: str,
+        fingerprint: str,
+        model: str,
+        market_generated_at: str,
+        report: dict,
+        usage: dict,
+    ) -> dict:
+        self._ensure_schema()
+        report_id = uuid.uuid4()
+        with self._connect() as connection:
+            row = connection.execute(
+                """
+                INSERT INTO ipo_analysis_reports(
+                    id, issue_key, company_name, input_fingerprint, model,
+                    market_generated_at, report, usage
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (issue_key, input_fingerprint) DO UPDATE
+                SET company_name = EXCLUDED.company_name,
+                    model = EXCLUDED.model,
+                    generated_at = now(),
+                    market_generated_at = EXCLUDED.market_generated_at,
+                    report = EXCLUDED.report,
+                    usage = EXCLUDED.usage
+                RETURNING issue_key, company_name, generated_at,
+                          market_generated_at, model, report
+                """,
+                (
+                    report_id,
+                    issue_key,
+                    company_name,
+                    fingerprint,
+                    model,
+                    market_generated_at,
+                    Jsonb(report),
+                    Jsonb(usage),
+                ),
+            ).fetchone()
+            connection.execute(
+                """
+                UPDATE ipo_analysis_state
+                SET lock_token = NULL, locked_until = NULL, last_generated_at = now()
+                WHERE issue_key = %s AND lock_token = %s
+                """,
+                (issue_key, token),
+            )
+        return dict(row)
+
+    def fail_analysis(self, issue_key: str, token) -> None:
+        self._ensure_schema()
+        with self._connect() as connection:
+            connection.execute(
+                """
+                UPDATE ipo_analysis_state SET lock_token = NULL, locked_until = NULL
+                WHERE issue_key = %s AND lock_token = %s
+                """,
+                (issue_key, token),
+            )
 
 
 def _issue_from_row(row: dict, details: dict) -> dict:

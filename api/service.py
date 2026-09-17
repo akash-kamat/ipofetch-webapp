@@ -90,7 +90,10 @@ def overview(payload: dict) -> dict:
 def _number(value) -> float | None:
     if value is None:
         return None
-    match = re.search(r"-?[\d,.]+", str(value))
+    text = str(value)
+    if not re.search(r"\bcr(?:ore)?\b", text, flags=re.IGNORECASE):
+        return None
+    match = re.search(r"-?[\d,.]+", text)
     if not match:
         return None
     try:

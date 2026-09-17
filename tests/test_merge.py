@@ -7,6 +7,11 @@ def test_price_band_parses_range_and_fixed_price():
     assert merge._parse_price_band(None) is None
 
 
+def test_nse_share_count_is_presented_as_approximate_issue_value():
+    assert merge._display_issue_size(88_607_596, {"max": 84}) == "~₹744.30 Cr"
+    assert merge._display_issue_size("₹1,200 Cr", {"max": 84}) == "₹1,200 Cr"
+
+
 def test_merged_record_keeps_dashboard_metadata():
     nse_data = {
         "ok": True,

@@ -185,7 +185,8 @@ def build_merged(nse_data: dict, bse_data: dict, gmp_data: dict) -> tuple[list, 
             "SME" if row.get("category") == "SME" else None
         )
         rec["listingDate"] = rec["listingDate"] or row.get("listingDate")
-        rec["issueSize"] = rec["issueSize"] or row.get("issueSize")
+        if row.get("issueSize"):
+            rec["issueSize"] = row["issueSize"]
         rec["lotSize"] = rec["lotSize"] or row.get("lotSize")
 
     for rec in by_key.values():
@@ -326,12 +327,27 @@ def _trim(rec: dict) -> dict:
         "priceBand": rec["priceBand"],
         "lotSize": rec["lotSize"],
         "faceValue": rec["faceValue"],
-        "issueSize": rec["issueSize"],
+        "issueSize": _display_issue_size(rec["issueSize"], rec["priceBand"]),
         "gmp": gmp_row["gmp"] if gmp_row else None,
         "subscription": rec.get("subscription"),
         "gmpUpdatedOn": gmp_row.get("updatedOn") if gmp_row else None,
         "detailUrl": gmp_row.get("detailUrl") if gmp_row else None,
     }
+
+
+def _display_issue_size(value, price_band: dict | None) -> str | None:
+    """NSE reports share count; present it as capital instead of raw shares."""
+    if value is None or value == "":
+        return None
+    text = str(value).strip()
+    if any(unit in text.lower() for unit in ("cr", "crore", "lakh", "₹", "rs")):
+        return text
+    shares = _number(value)
+    upper_price = (price_band or {}).get("max")
+    if shares is not None and upper_price is not None:
+        crore = shares * float(upper_price) / 10_000_000
+        return f"~₹{crore:,.2f} Cr"
+    return text
 
 
 def _source_health(source_data: dict) -> dict:
