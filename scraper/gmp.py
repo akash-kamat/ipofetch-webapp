@@ -12,8 +12,9 @@ Caveats:
 - Several fields (Name, GMP) come back as raw HTML fragments and are parsed
   with string/regex extraction below.
 """
+
 import re
-from datetime import datetime
+from datetime import UTC, datetime
 
 import requests
 
@@ -54,7 +55,9 @@ def _parse_gmp_field(raw: str):
         return {"value": None, "percent": None}
     value_raw, percent_raw = match.group(1).strip(), match.group(2).strip()
     value = None if value_raw in ("--", "-", "") else _to_float(value_raw)
-    percent = None if "%" not in percent_raw else _to_float(percent_raw.replace("%", ""))
+    percent = (
+        None if "%" not in percent_raw else _to_float(percent_raw.replace("%", ""))
+    )
     return {"value": value, "percent": percent}
 
 
@@ -76,7 +79,6 @@ def _clean_row(row: dict) -> dict:
         "status": _STATUS_MAP.get(row.get("~ipo_status1"), row.get("~ipo_status1")),
         "category": row.get("~IPO_Category"),
         "gmp": _parse_gmp_field(row.get("GMP", "")),
-        "subscriptionTimes": strip_html(row.get("Sub", "")) or None,
         "price": strip_html(row.get("Price (₹)", "")) or None,
         "issueSize": strip_html(row.get("IPO Size", "")) or None,
         "lotSize": strip_html(row.get("Lot", "")) or None,
@@ -93,11 +95,9 @@ def _clean_row(row: dict) -> dict:
 
 
 def fetch_gmp(session: requests.Session, category: str = "all") -> list:
-    today = datetime.utcnow()
+    today = datetime.now(UTC)
     fy = _fiscal_year_str(today)
-    url = (
-        f"{API_BASE}/{REPORT_ID}/1/{today.month}/{today.year}/{fy}/0/{category}"
-    )
+    url = f"{API_BASE}/{REPORT_ID}/1/{today.month}/{today.year}/{fy}/0/{category}"
     resp = request_with_retry(session, "GET", url, params={"search": ""})
     data = resp.json()
     rows = data.get("reportTableData", [])

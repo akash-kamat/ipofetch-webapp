@@ -20,6 +20,8 @@ def test_merged_record_keeps_dashboard_metadata():
             }
         ],
         "current": [],
+        "past": [],
+        "subscriptions": {},
     }
     bse_data = {
         "ok": True,
@@ -45,7 +47,6 @@ def test_merged_record_keeps_dashboard_metadata():
                 "status": "upcoming",
                 "category": "MAINBOARD",
                 "gmp": {"value": 20.0, "percent": 18.18},
-                "subscriptionTimes": "-",
                 "listingDate": "2026-09-24",
                 "issueSize": "₹100 Cr",
                 "lotSize": "100",
@@ -64,6 +65,7 @@ def test_merged_record_keeps_dashboard_metadata():
     assert trimmed["gmp"] == {"value": 20.0, "percent": 18.18}
     assert trimmed["gmpUpdatedOn"] == "16-Sep-2026 10:00"
     assert trimmed["detailUrl"] == "https://example.com/signal"
+    assert trimmed["issueKey"] == "signalindustries"
 
 
 def test_source_health_is_safe_for_missing_fields():
@@ -88,6 +90,74 @@ def test_unmatched_gmp_keeps_the_complete_record():
         "detailUrl": "https://example.com/early",
     }
     _, unmatched = merge.build_merged(
-        {"current": [], "upcoming": []}, {"issues": []}, {"gmp": [row]}
+        {"current": [], "upcoming": [], "past": []}, {"issues": []}, {"gmp": [row]}
     )
     assert unmatched == [row]
+
+
+def test_closed_nse_issues_and_consolidated_subscription_are_kept():
+    nse_data = {
+        "current": [{"companyName": "Live Limited", "symbol": "LIVE", "series": "EQ"}],
+        "upcoming": [],
+        "past": [
+            {
+                "companyName": "Historic Limited",
+                "symbol": "HISTORIC",
+                "issueStartDate": "01-Jan-2026",
+                "issueEndDate": "03-Jan-2026",
+            }
+        ],
+        "subscriptions": {
+            "LIVE": {
+                "nse": {
+                    "data": [
+                        {
+                            "srNo": 1,
+                            "category": "Retail",
+                            "noOfSharesOffered": "1,000",
+                            "noOfsharesBid": "2,000",
+                            "noOfTime": "2.00",
+                        }
+                    ]
+                },
+                "consolidated": {
+                    "updateTime": "17-Sep-2026 12:00:00",
+                    "dataList": [
+                        {
+                            "srNo": 1,
+                            "category": "Total",
+                            "noOfShareOffered": "1,500",
+                            "noOfSharesBid": "3,000",
+                            "noOfTotalMeant": "2.00",
+                        }
+                    ],
+                },
+            }
+        },
+    }
+    records, _ = merge.build_merged(nse_data, {"issues": []}, {"gmp": []})
+    by_name = {record["companyName"]: merge._trim(record) for record in records}
+
+    assert by_name["Historic Limited"]["status"] == "closed"
+    assert by_name["Live Limited"]["subscription"]["totalTimes"] == 2.0
+    assert (
+        by_name["Live Limited"]["subscription"]["nseBidDetails"][0]["sharesBid"] == 2000
+    )
+
+
+def test_symbol_aliases_are_deduplicated():
+    records, _ = merge.build_merged(
+        {
+            "current": [
+                {"companyName": "R S L Limited", "symbol": "RSL", "series": "EQ"},
+                {"companyName": "RSL Limited", "symbol": "RSL", "series": "EQ"},
+            ],
+            "upcoming": [],
+            "past": [],
+            "subscriptions": {},
+        },
+        {"issues": []},
+        {"gmp": []},
+    )
+    assert len(records) == 1
+    assert records[0]["issueKey"] == "rsl"

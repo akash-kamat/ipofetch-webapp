@@ -4,6 +4,7 @@ Unlike NSE, BSE's API does not require a cookie handshake -- it only checks
 the Referer header. flag=1 returns live/recent/forthcoming issues (both
 MainBoard and SME platforms).
 """
+
 import requests
 
 from .common import USER_AGENT, request_with_retry

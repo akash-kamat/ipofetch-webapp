@@ -25,7 +25,7 @@
     <section class="view" data-panel="issues">
       <div class="toolbar">
         <label class="search"><span>Search</span><input id="search" type="search" placeholder="Company name"></label>
-        <label><span>Status</span><select id="status-filter"><option value="all">All statuses</option><option value="open">Open</option><option value="upcoming">Upcoming</option></select></label>
+        <label><span>Status</span><select id="status-filter"><option value="all">All statuses</option><option value="open">Open</option><option value="upcoming">Upcoming</option><option value="closed">Closed</option></select></label>
         <label><span>Platform</span><select id="platform-filter"><option value="all">All platforms</option><option value="Mainboard">Mainboard</option><option value="SME">SME</option></select></label>
         <label class="check"><input id="saved-filter" type="checkbox"> Saved only</label><button id="export-csv" class="button">Export CSV</button>
       </div>
@@ -34,7 +34,7 @@
     </section>
     <section class="view" data-panel="early">
       <div class="panel-head section-head"><div><h2>Early GMP records</h2><p>InvestorGain records not yet matched to an official NSE or BSE issue</p></div><label class="search"><span>Search</span><input id="early-search" type="search" placeholder="Company name"></label></div>
-      <div class="table-wrap data-table"><table><thead><tr><th>Company</th><th>Status / category</th><th>Dates</th><th>Price / lot</th><th>Issue size</th><th>GMP</th><th>Subscription</th><th>Updated</th><th>Source</th></tr></thead><tbody id="early-body"></tbody></table></div>
+      <div class="table-wrap data-table"><table><thead><tr><th>Company</th><th>Status / category</th><th>Dates</th><th>Price / lot</th><th>Issue size</th><th>GMP</th><th>Updated</th><th>Source</th></tr></thead><tbody id="early-body"></tbody></table></div>
     </section>
     <section class="view" data-panel="sources">
       <div class="source-layout">
